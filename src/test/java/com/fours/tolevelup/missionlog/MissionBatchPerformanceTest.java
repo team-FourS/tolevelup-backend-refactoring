@@ -3,9 +3,7 @@ package com.fours.tolevelup.missionlog;
 
 
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
 import com.fours.tolevelup.repository.user.UserRepository;
-import com.fours.tolevelup.service.missionlog.MissionLogService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,21 +17,14 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+
 
 @Slf4j
 @SpringBootTest
 public class MissionBatchPerformanceTest {
-
-    @Autowired
-    private MissionLogService missionlogService;
 
     @Autowired
     private UserRepository userRepository;
@@ -50,18 +41,16 @@ public class MissionBatchPerformanceTest {
     @Test
     void testMissionInsertPerformance() throws Exception {
 
-        //generateTestUsers(10000);
-
-        // 1. 기존 서비스 메서드 실행 시간 측정
+        /*
+        기존 서비스 메서드 실행 시간 측정
         long startOld = System.currentTimeMillis();
         missionlogService.dailyMissionLogControl();
         long endOld = System.currentTimeMillis();
         long durationOld = endOld - startOld;
+        */
 
 
-        //missionLogRepository.deleteAll();
-
-        // 2. Spring Batch Job 실행 시간 측정
+        // Spring Batch Job 실행 시간 측정
         JobParameters jobParameters = new JobParametersBuilder()
                 .addDate("runDate", new Date())
                 .toJobParameters();
@@ -72,11 +61,9 @@ public class MissionBatchPerformanceTest {
         long endBatch = System.currentTimeMillis();
         long durationBatch = endBatch - startBatch;
 
-
-        log.info("[기존 방식 실행 시간] {} ms", durationOld);
+        //log.info("[기존 방식 실행 시간] {} ms", durationOld);
         log.info("[배치 방식 실행 시간] {} ms", durationBatch);
 
-        // 배치 job 상태 확인
         Assertions.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 
     }
@@ -101,7 +88,6 @@ public class MissionBatchPerformanceTest {
         }
         userRepository.saveAll(users);
     }
-
 
 }
 
