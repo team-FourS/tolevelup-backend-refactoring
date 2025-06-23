@@ -5,7 +5,7 @@ import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.mission.MissionRepositoryImpl;
+import com.fours.tolevelup.repository.mission.MissionRepository;
 import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepositoryImpl;
 import com.fours.tolevelup.repository.user.UserRepository;
@@ -22,14 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class MissionLogService {
 
     private final MissionLogRepository missionLogRepository;
-    private final MissionRepositoryImpl missionRepository;
+    private final MissionRepository missionRepository;
     private final ThemeRepositoryImpl themeRepository;
     private final UserRepository userRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void dailyMissionLogControl() {
-        deleteLog(MissionStatus.DAILY_ONGOING);
         List<User> userList = userRepository.findAll();
         for (User u : userList) {
             insertLog(u, randomMission("daily"), MissionStatus.DAILY_ONGOING);
@@ -55,6 +54,32 @@ public class MissionLogService {
     private void deleteLog(MissionStatus status) {
         List<MissionLog> missionLogList = missionLogRepository.findByStatus(status);
         missionLogRepository.deleteAll(missionLogList);
+    }
+
+    public List<MissionLog> assignDailyMissions(User user) {
+        List<Theme> themeList = themeRepository.findByType("daily");
+        List<Mission> randomMissionList = new ArrayList<>();
+
+        for (Theme theme : themeList) {
+            List<Integer> missionIds = missionRepository.findMissionIdsByThemeId(theme.getId());
+            Collections.shuffle(missionIds);
+            List<Integer> selectedIds = missionIds.subList(0, 3);
+            List<Mission> selectedMissions = new ArrayList<>();
+            for(int id : selectedIds) {
+                selectedMissions.add(missionRepository.findAllById(id));
+            }
+            randomMissionList.addAll(selectedMissions);
+        }
+
+        List<MissionLog> logs = new ArrayList<>();
+        for (Mission mission : randomMissionList) {
+            logs.add(MissionLog.builder()
+                    .user(user)
+                    .mission(mission)
+                    .status(MissionStatus.DAILY_ONGOING)
+                    .build());
+        }
+        return logs;
     }
 
     private void insertLog(User u, List<Mission> missionList, MissionStatus status) {
