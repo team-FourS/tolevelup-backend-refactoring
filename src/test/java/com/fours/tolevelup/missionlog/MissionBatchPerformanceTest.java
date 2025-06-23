@@ -42,13 +42,12 @@ public class MissionBatchPerformanceTest {
     void testMissionInsertPerformance() throws Exception {
 
         /*
-        기존 서비스 메서드 실행 시간 측정
+        기존 서비스 메서드 실행 시간 측정 로직
         long startOld = System.currentTimeMillis();
         missionlogService.dailyMissionLogControl();
         long endOld = System.currentTimeMillis();
         long durationOld = endOld - startOld;
         */
-
 
         // Spring Batch Job 실행 시간 측정
         JobParameters jobParameters = new JobParametersBuilder()
