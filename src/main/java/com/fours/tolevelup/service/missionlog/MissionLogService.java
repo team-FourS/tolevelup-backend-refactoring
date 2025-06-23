@@ -82,6 +82,33 @@ public class MissionLogService {
         return logs;
     }
 
+    public List<MissionLog> assignWeeklyMissions(User user) {
+        List<Theme> themeList = themeRepository.findByType("weekly");
+        List<Mission> randomMissionList = new ArrayList<>();
+
+        for (Theme theme : themeList) {
+            List<Integer> missionIds = missionRepository.findMissionIdsByThemeId(theme.getId());
+            Collections.shuffle(missionIds);
+            List<Integer> selectedIds = missionIds.subList(0, 2);
+            List<Mission> selectedMissions = new ArrayList<>();
+            for(int id : selectedIds) {
+                selectedMissions.add(missionRepository.findAllById(id));
+            }
+            randomMissionList.addAll(selectedMissions);
+        }
+
+        List<MissionLog> logs = new ArrayList<>();
+        for (Mission mission : randomMissionList) {
+            logs.add(MissionLog.builder()
+                    .user(user)
+                    .mission(mission)
+                    .status(MissionStatus.WEEKLY_ONGOING)
+                    .build());
+        }
+        return logs;
+    }
+
+
     private void insertLog(User u, List<Mission> missionList, MissionStatus status) {
         for (Mission m : missionList) {
             MissionLog log = MissionLog.builder().user(u).mission(m).status(status).build();
