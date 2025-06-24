@@ -4,14 +4,9 @@ package com.fours.tolevelup.controller.response;
 import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.model.MissionDTO;
 import com.fours.tolevelup.model.UserDTO;
-import com.fours.tolevelup.model.entity.Comment;
-import com.fours.tolevelup.service.character.CharacterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 

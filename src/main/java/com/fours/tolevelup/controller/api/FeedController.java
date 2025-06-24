@@ -6,8 +6,7 @@ import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.service.CommentService;
 import com.fours.tolevelup.service.FeedService;
-import com.fours.tolevelup.service.character.CharacterDTO;
-import com.fours.tolevelup.service.character.CharacterDTO.UserCharacterInfo;
+import com.fours.tolevelup.service.LikeService;
 import com.fours.tolevelup.service.character.CharacterService;
 import java.sql.Date;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
 
     private final FeedService feedService;
+    private final LikeService likeService;
     private final CommentService commentService;
     private final CharacterService characterService;
+
+    public void get(
+            @PageableDefault(size = 10)
+            Pageable pageable
+    ) {
+        return;
+    }
 
     @GetMapping
     public Response<List<FeedResponse.FeedData>> feedList(Authentication authentication, Pageable pageable) {
@@ -55,7 +62,7 @@ public class FeedController {
 
     @GetMapping("/character/{id}")
     public Response<FeedResponse.CharacterData> characterData(Authentication authentication,
-                                                             @PathVariable("id") String userId) {
+                                                              @PathVariable("id") String userId) {
         return Response.success(new FeedResponse.CharacterData(feedService.getCharacterData(userId)));
     }
 
@@ -67,13 +74,13 @@ public class FeedController {
 
     @PostMapping("/{id}/likes")
     public Response<String> likeCheck(Authentication authentication, @PathVariable("id") String userId) {
-        feedService.checkLike(authentication.getName(), userId);
+        likeService.createLike(authentication.getName(), userId);
         return Response.success("좋아요 전송");
     }
 
     @DeleteMapping("/{id}/likes")
     public Response<String> likeCancel(Authentication authentication, @PathVariable("id") String userId) {
-        feedService.deleteLike(authentication.getName(), userId);
+        likeService.deleteLike(authentication.getName(), userId);
         return Response.success("좋아요 취소");
     }
 

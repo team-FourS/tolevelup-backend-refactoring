@@ -58,7 +58,7 @@ public class FeedService {
                             .userData(UserDTO.publicUserData.fromUser(feedUser))
                             .followStatus(getFollowStatus(user, feedUser))
                             .userCompleteMissions(missionService.userToDayCompleteList(feedUser.getId()))
-                            .myLikeChecked(getUserLikeChecked(userId, feedUser.getId()))
+                            //.myLikeChecked(getUserLikeChecked(userId, feedUser.getId()))
                             .thisLikeCounts(getFeedLikeCount(feedUser.getId()))
                             //.thisCommentCounts(getFeedCommentCounts(feedUser.getId()))
                             .build()
@@ -85,36 +85,11 @@ public class FeedService {
 
     }
 
-    private boolean getUserLikeChecked(String fromId, String toId) {
-        User fromUser = getUserOrException(fromId);
-        User toUser = getUserOrException(toId);
-        return likeRepository.findByUserAndFeedUser(fromUser, toUser).isPresent();
-    }
-
     private boolean getFollowStatus(User fromUser, User followUser) {
         return followRepository.findByFromUserAndFollowingUser(fromUser, followUser).isPresent();
     }
 
 
-    @Transactional
-    public void checkLike(String fromId, String toId) {
-        User fromUser = getUserOrException(fromId);
-        User toUser = getUserOrException(toId);
-        likeRepository.findByUserAndFeedUser(fromUser, toUser).ifPresent(it -> {
-            throw new TluApplicationException(ErrorCode.ALREADY_LIKE);
-        });
-        likeRepository.save(Like.builder().fromUser(fromUser).toUser(toUser).build());
-        alarmRepository.save(Alarm.builder().toUser(toUser).fromUser(fromUser).alarmType(AlarmType.NEW_LIKE).build());
-    }
-
-    @Transactional
-    public void deleteLike(String fromId, String toId) {
-        User fromUser = getUserOrException(fromId);
-        User toUser = getUserOrException(toId);
-        Like like = likeRepository.findByUserAndFeedUser(fromUser, toUser).orElseThrow(() ->
-                new TluApplicationException(ErrorCode.LIKE_NOT_FOUND));
-        likeRepository.delete(like);
-    }
 
     private long getFeedLikeCount(String userId) {
         User user = getUserOrException(userId);

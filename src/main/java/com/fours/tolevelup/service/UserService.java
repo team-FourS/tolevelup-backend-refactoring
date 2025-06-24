@@ -44,7 +44,7 @@ public class UserService {
     private final LikeRepository likeRepository;
     private final ThemeExpRepository themeExpRepository;
     private final ThemeRepository themeRepository;
-    private final MissionLogService missionLogService;
+    private final MissionLogAssignService missionLogAssignService;
     private final MissionLogRepository missionLogRepository;
     private final UserCharacterRepository userCharacterRepository;
     private final CharacterRepository characterRepository;
@@ -179,7 +179,7 @@ public class UserService {
 
     public long totalReceivedLikes(String userId) {
         User user = getUserOrException(userId);
-        return likeRepository.countAllByToUser(user);
+        return likeRepository.countAllByToUserId(userId);
     }
 
     public Slice<AlarmDTO> findUserAlarmList(String id, Pageable pageable) {

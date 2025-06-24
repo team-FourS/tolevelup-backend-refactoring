@@ -1,13 +1,9 @@
 package com.fours.tolevelup.repository;
 
-import com.fours.tolevelup.model.MissionDTO;
-import com.fours.tolevelup.model.MissionStatus;
-import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +13,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface MissionLogRepository extends JpaRepository<MissionLog, Long> {
-
 
     @Query("select ml.user from MissionLog ml where ml.update_at >= current_date " +
             "group by ml.user order by ml.update_at desc")
@@ -49,7 +43,6 @@ public interface MissionLogRepository extends JpaRepository<MissionLog, Long> {
     @Query("select count(ml) from MissionLog ml where ml.user =:user and ml.mission.theme =:theme" +
             " and function('date_format',ml.update_at,'%Y-%m') <= current_date ")
     long countByTheme(@Param("user") User user, @Param("theme") Theme theme);
-
 
     @Query("select sum(ml.mission.exp) from MissionLog ml where ml.user =:user and " +
             "function('date_format',ml.update_at,'%Y-%m') =:date and ml.mission.theme =:theme")

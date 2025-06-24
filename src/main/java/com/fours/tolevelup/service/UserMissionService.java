@@ -10,7 +10,6 @@ import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.MissionLogRepository;
-import com.fours.tolevelup.repository.MissionRepository;
 import com.fours.tolevelup.repository.ThemeRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import java.sql.Date;
@@ -28,7 +27,6 @@ public class UserMissionService {
     private final UserRepository userRepository;
     private final ThemeRepository themeRepository;
     private final MissionLogRepository missionLogRepository;
-    private final MissionRepository missionRepository;
 
     @Transactional(readOnly = true)
     public List<UserThemeMissionResponse> getTodayMissionWithTheme(String userId, int themeId) {
