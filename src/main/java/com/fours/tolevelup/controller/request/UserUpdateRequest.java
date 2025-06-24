@@ -1,10 +1,16 @@
 package com.fours.tolevelup.controller.request;
 
 
-public record UserUpdateRequest(
-        String password,
-        String name,
-        String email,
-        String intro
-) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+
+@Getter
+@AllArgsConstructor
+public class UserUpdateRequest{
+    private String password;
+    private String name;
+    private String email;
+    private String intro;
+
 }

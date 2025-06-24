@@ -19,7 +19,7 @@ import com.fours.tolevelup.repository.FollowRepository;
 import com.fours.tolevelup.repository.LikeRepository;
 import com.fours.tolevelup.repository.character.CharacterRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
+import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepository;
 import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;
@@ -102,10 +102,10 @@ public class UserService {
     ) {
         User user = getUserOrException(userId);
         user.update(
-                (request.password() == null) ? null : encoder.encode(request.password()),
-                request.name(),
-                (request.email() == null) ? null : getVerifiedEmail(request.email()),
-                request.intro()
+                (request.getPassword() == null) ? null : encoder.encode(request.getPassword()),
+                request.getName(),
+                (request.getEmail() == null) ? null : getVerifiedEmail(request.getEmail()),
+                request.getIntro()
         );
     }
 
