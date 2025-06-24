@@ -1,5 +1,6 @@
 package com.fours.tolevelup.repository;
 
+import com.fours.tolevelup.model.MissionDTO;
 import com.fours.tolevelup.model.MissionStatus;
 import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
@@ -22,58 +23,46 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MissionLogRepository extends JpaRepository<MissionLog, Long> {
 
 
-    @Query("select ml.user from MissionLog ml where ml.end_time >= current_date " +
-            "group by ml.user order by ml.end_time desc")
+    @Query("select ml.user from MissionLog ml where ml.update_at >= current_date " +
+            "group by ml.user order by ml.update_at desc")
     Slice<User> findUserSortByTodayEndTime(Pageable pageable);
 
     @Query("select distinct ml.user from MissionLog ml join fetch Follow f " +
             "on ml.user = f.followingUser " +
-            "where ml.end_time >= current_date " +
+            "where ml.update_at >= current_date " +
             "and f.fromUser.id =:uid " +
-            "group by ml.user order by ml.end_time desc")
+            "group by ml.user order by ml.update_at desc")
     Slice<User> findFollowSortByTodayEndTime(@Param("uid") String userId, Pageable pageable);
 
-    @Query("select ml from MissionLog ml where ml.user.id =:uid and ml.mission.theme =:theme and ml.start_date >= current_date")
-    List<MissionLog> findByTheme(@Param("uid") String user, @Param("theme") Theme theme);
-
-
     @Query("select ml from MissionLog ml where ml.user =:user and ml.mission.theme =:theme and ml.start_date >=:date")
-    List<MissionLog> findByThemAndDate(@Param("user") User user, @Param("theme") Theme theme, @Param("date") Date date);
+    List<MissionLog> findUserTodayMissionByTheme(User user, Theme theme, Date date);
 
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE MissionLog ml SET ml.status = :status, ml.end_time = :eTime where ml = :log")
-    void updateMissionLogStatus(@Param("log") MissionLog log, @Param("status") MissionStatus status,
-                                @Param("eTime") Timestamp eTime);
+    Optional<MissionLog> findById(Long id);
 
-    @Query("select m from MissionLog m where m.user = :user and m.mission = :mission and m.start_date >= :date")
-    Optional<MissionLog> findByUserAndMission(@Param("user") User user, @Param("mission") Mission mission,
-                                              @Param("date") Date date);
-
-    @Query("select ml from MissionLog ml where ml.user.id = :uid and ml.end_time >= current_date")
+    @Query("select ml from MissionLog ml where ml.user.id = :uid and ml.update_at >= current_date")
     List<MissionLog> findTodayCompleteByUser(@Param("uid") String userId);
 
     @Query("select count(ml) from MissionLog ml where ml.user =:user " +
-            "and function('date_format',ml.end_time,'%Y-%m') <= current_date ")
+            "and function('date_format',ml.update_at,'%Y-%m') <= current_date ")
     long countAllCompleteByUser(@Param("user") User user);
 
     @Query("select count(ml) from MissionLog ml where ml.user =:user and ml.mission.theme =:theme" +
-            " and function('date_format',ml.end_time,'%Y-%m') <= current_date ")
+            " and function('date_format',ml.update_at,'%Y-%m') <= current_date ")
     long countByTheme(@Param("user") User user, @Param("theme") Theme theme);
 
 
     @Query("select sum(ml.mission.exp) from MissionLog ml where ml.user =:user and " +
-            "function('date_format',ml.end_time,'%Y-%m') =:date and ml.mission.theme =:theme")
+            "function('date_format',ml.update_at,'%Y-%m') =:date and ml.mission.theme =:theme")
     Optional<Long> expSumByDateAndTheme(@Param("user") User user, @Param("theme") Theme theme,
                                         @Param("date") String date);
 
     @Query("select sum(ml.mission.exp) from MissionLog ml where ml.user.id =:uid and " +
-            "function('date_format',ml.end_time,'%Y-%m') =:date and ml.mission.theme =:theme")
+            "function('date_format',ml.update_at,'%Y-%m') =:date and ml.mission.theme =:theme")
     Optional<Long> expSumByDateAndThemeAndUserId(@Param("uid") String user_id, @Param("theme") Theme theme,
                                                  @Param("date") String date);
 
     @Query("select sum(ml.mission.exp) from MissionLog ml where ml.user.id =:uid and " +
-            "function('date_format',ml.end_time,'%Y-%m') =:date group by ml.user.id")
+            "function('date_format',ml.update_at,'%Y-%m') =:date group by ml.user.id")
     Optional<Integer> expTotal(@Param("uid") String user_id, @Param("date") String date);
 
     @Query(value = "SELECT i.ranking " +

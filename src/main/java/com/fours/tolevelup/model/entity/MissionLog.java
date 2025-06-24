@@ -3,6 +3,7 @@ package com.fours.tolevelup.model.entity;
 import com.fours.tolevelup.model.MissionStatus;
 import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.User;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class MissionLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Date start_date;
-    private Timestamp end_time;
+
+    private Timestamp update_at;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -44,11 +47,19 @@ public class MissionLog {
         this.start_date = Date.valueOf(LocalDate.now());
     }
 
+    @PreUpdate
+    void updatedAt(){
+        this.update_at = Timestamp.valueOf(LocalDateTime.now());
+    }
+
+    public void updateStatus(MissionStatus status) {
+        this.status = status;
+    }
+
     @Builder
-    public MissionLog(User user, Mission mission, Timestamp end_time, MissionStatus status){
+    public MissionLog(User user, Mission mission, MissionStatus status) {
         this.user = user;
         this.mission = mission;
-        this.end_time = end_time;
         this.status = status;
     }
 }

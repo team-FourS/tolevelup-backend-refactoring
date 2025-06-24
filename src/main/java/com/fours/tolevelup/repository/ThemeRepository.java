@@ -10,6 +10,8 @@ public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
     Optional<Theme> findById(int id);
 
+    Optional<Theme> findByType(ThemeType type);
+
     List<Theme> findAllByType(ThemeType type);
 
 }

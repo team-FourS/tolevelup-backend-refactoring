@@ -40,35 +40,23 @@ public class MissionService {
     private final UserCharacterRepository userCharacterRepository;
     private final MissionRepository missionRepository;
     private final MissionLogRepository missionLogRepository;
-    private final ThemeRepository themeRepository;
     private final ThemeExpRepository themeExpRepository;
     private final CharacterRepository characterRepository;
 
-
-    public List<MissionDTO.mission> todayThemeMissions(String userId, int themeId) {
-        User user = getUserOrException(userId);
-        Theme theme = themeRepository.findById(themeId).orElseThrow(() ->
-                new TluApplicationException(ErrorCode.THEME_NOT_FOUND));
-        Date startDate = getStartDate(theme.getType());
-        return missionLogRepository.findByThemAndDate(user, theme, startDate).stream()
-                .map(MissionDTO.mission::fromMissionLog)
-                .collect(Collectors.toList());
-    }
 
     public List<MissionDTO.mission> userToDayCompleteList(String userId) {
         return missionLogRepository.findTodayCompleteByUser(userId)
                 .stream().map(MissionDTO.mission::fromMissionLog).collect(Collectors.toList());
     }
 
-
+    // 해당 로직 UserMissionService 로 리팩터링했습니다! 캐릭터 부분 있어서 남겨두었습니다!
     @Transactional
-    public void changeMissionStatus(String userId, int missionId) {
+    public void changeMissionStatus(String userId, int missionId, Long logId) {
         User user = getUserOrException(userId);
         Mission mission = getMissionOrException(missionId);
-        Date startDate = getStartDate(mission.getTheme().getType());
-        MissionLog missionLog = getMissionLogOrException(user, mission, startDate);
+        MissionLog missionLog = getMissionLogOrException(logId);
+
         UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,mission.getTheme().getName());
-        missionLogRepository.updateMissionLogStatus(missionLog, changeStatus(missionLog), getEndTime(missionLog));
         int beforeExp = themeExpRepository.exp(user, mission.getTheme());
         themeExpRepository.updateExp(getMissionExp(missionLog), user, mission.getTheme());
         int afterExp = themeExpRepository.exp(user, mission.getTheme());
@@ -110,16 +98,9 @@ public class MissionService {
                 new TluApplicationException(ErrorCode.MISSION_NOT_FOUND));
     }
 
-    private MissionLog getMissionLogOrException(User user, Mission mission, Date startDate) {
-        return missionLogRepository.findByUserAndMission(user, mission, startDate).orElseThrow(() ->
+    private MissionLog getMissionLogOrException(Long missionLogId) {
+        return missionLogRepository.findById(missionLogId).orElseThrow(() ->
                 new TluApplicationException(ErrorCode.MISSION_LOG_NOT_FOUND));
-    }
-
-    private Date getStartDate(ThemeType themeType) {
-        if (themeType == ThemeType.WEEKLY) {
-            return Date.valueOf(LocalDate.now().minusDays(LocalDate.now().getDayOfWeek().getValue() - 1));
-        }
-        return Date.valueOf(LocalDate.now());
     }
 
     private float getMissionExp(MissionLog missionLog) {
@@ -129,24 +110,10 @@ public class MissionService {
         return missionLog.getMission().getExp();
     }
 
-    private Timestamp getEndTime(MissionLog missionLog) {
-        if (checkComplete(missionLog)) {
-            return null;
-        }
-        return Timestamp.valueOf(LocalDateTime.now());
-    }
-
     private boolean checkComplete(MissionLog missionLog) {
         return missionLog.getStatus().toString().split("_")[1].equals("COMPLETE");
     }
 
-    private MissionStatus changeStatus(MissionLog missionLog) {
-        return switch (missionLog.getStatus()) {
-            case DAILY_COMPLETE -> MissionStatus.DAILY_ONGOING;
-            case WEEKLY_COMPLETE -> MissionStatus.WEEKLY_ONGOING;
-            case DAILY_ONGOING -> MissionStatus.DAILY_COMPLETE;
-            case WEEKLY_ONGOING -> MissionStatus.WEEKLY_COMPLETE;
-        };
-    }
+
 
 }
