@@ -1,4 +1,4 @@
-package com.fours.tolevelup.repository.mission;
+package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.entity.Mission;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MissionRepository extends JpaRepository<Mission, Integer>, MissionCustomRepository {
+public interface MissionRepository extends JpaRepository<Mission, Integer> {
 
     @Query("SELECT m.id FROM Mission m WHERE m.theme.id = :themeId")
     List<Integer> findMissionIdsByThemeId(int themeId);

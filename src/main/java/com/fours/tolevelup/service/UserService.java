@@ -1,5 +1,6 @@
-package com.fours.tolevelup.service.user;
+package com.fours.tolevelup.service;
 
+import com.fours.tolevelup.controller.request.UserUpdateRequest;
 import com.fours.tolevelup.controller.response.UserResponse;
 import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
@@ -21,7 +22,7 @@ import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepository;
 import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.service.missionlog.MissionLogService;
 import com.fours.tolevelup.util.JwtTokenUtils;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
     private final AlarmRepository alarmRepository;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
                 new TluApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", id)));
     }
 
-    @Override
+
     @Transactional
     public void userJoin(String id, String password, String name, String email) {
         if (id == null || password == null || name == null || email == null) {
@@ -95,7 +96,19 @@ public class UserServiceImpl implements UserService {
         //missionLogService.createMissionLog(user);
     }
 
-    @Override
+    @Transactional
+    public void changeUserInformation(
+            String userId, UserUpdateRequest request
+    ) {
+        User user = getUserOrException(userId);
+        user.update(
+                (request.password() == null) ? null : encoder.encode(request.password()),
+                request.name(),
+                (request.email() == null) ? null : getVerifiedEmail(request.email()),
+                request.intro()
+        );
+    }
+
     public String login(String userId, String password) {
         UserDTO user = loadUserVoByUserId(userId);
         passwordMatchCheck(user.getPassword(), password);
@@ -104,6 +117,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void delete(String userId) {
+        // TODO: case 설정해서 자동으로 삭제되도록 할까요
         User user = getUserOrException(userId);
         themeExpRepository.deleteAllByUser(user);
         missionLogRepository.deleteAllByUser(user);
@@ -127,52 +141,15 @@ public class UserServiceImpl implements UserService {
         return UserResponse.UserData.fromUserDTO(user);
     }
 
-    @Transactional
-    public String changeInformation(String userId, String type, String data) {
-        User user = getUserOrException(userId);
-        if (type.equals("password")) {
-            return changePassword(user, data);
-        }
-        if (type.equals("name")) {
-            return changeName(user, data);
-        }
-        if (type.equals("email")) {
-            return changeEmail(user, data);
-        }
-        if (type.equals("intro")) {
-            return changeIntro(user, data);
-        }
-        if (type.equals("id")) {
-            throw new TluApplicationException(ErrorCode.INVALID_PERMISSION, "id는 변경불가");
-        }
-        throw new TluApplicationException(ErrorCode.TYPE_NOT_FOUND);
-    }
-
-    private String changePassword(User user, String newPassword) {
-        userRepository.updatePassWord(user, encoder.encode(newPassword));
-        return "password";
-    }
-
-    private String changeName(User user, String newName) {
-        userRepository.updateName(user, newName);
-        return "name";
-    }
-
-    private String changeEmail(User user, String newEmail) {
-        userRepository.findByEmail(newEmail).ifPresent(it -> {
+    private String getVerifiedEmail(String email) {
+        userRepository.findByEmail(email).ifPresent(it -> {
             throw new TluApplicationException(ErrorCode.DUPLICATED_USER_EMAIL,
-                    String.format("%s is duplicated", newEmail));
+                    "같은 이메일이 이미 존재합니다.");
         });
-        userRepository.updateEmail(user, newEmail);
-        return "email";
+        return email;
     }
 
-    private String changeIntro(User user, String newIntro) {
-        userRepository.updateIntro(user, newIntro);
-        return "intro";
-    }
 
-    @Override
     public UserResponse.UserData findUserData(String userId) {
         UserDTO user = loadUserVoByUserId(userId);
         return UserResponse.UserData.fromUserDTO(user);
@@ -238,7 +215,7 @@ public class UserServiceImpl implements UserService {
                         String.format("%s is duplicated and c check", id)));
     }
 
-    @Override
+
     public void userLevelUp(String id) {
         int total = themeExpRepository.expTotal(id);
         if (total >= 40) {

@@ -2,7 +2,7 @@ package com.fours.tolevelup.batch.mission.common;
 
 
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;

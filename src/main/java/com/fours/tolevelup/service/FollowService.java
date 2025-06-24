@@ -10,7 +10,7 @@ import com.fours.tolevelup.model.entity.Follow;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.AlarmRepository;
 import com.fours.tolevelup.repository.FollowRepository;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

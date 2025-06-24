@@ -5,7 +5,7 @@ import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.mission.MissionRepository;
+import com.fours.tolevelup.repository.MissionRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepositoryImpl;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,17 +1,11 @@
 package com.fours.tolevelup.service.themeexp;
 
-import com.fours.tolevelup.model.ThemeExpDTO;
-import com.fours.tolevelup.model.entity.Mission;
-import com.fours.tolevelup.model.entity.ThemeExp;
 import com.fours.tolevelup.repository.theme.ThemeRepositoryImpl;
 import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

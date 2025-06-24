@@ -6,7 +6,7 @@ import com.fours.tolevelup.exception.TluApplicationException;
 import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.CommentRepository;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

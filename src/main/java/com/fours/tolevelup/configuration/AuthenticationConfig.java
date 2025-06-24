@@ -6,7 +6,7 @@ import com.fours.tolevelup.configuration.filter.CorsConfig;
 import com.fours.tolevelup.configuration.filter.JwtTokenFilter;
 import com.fours.tolevelup.exception.CustomAuthenticationEntryPoint;
 import com.fours.tolevelup.exception.CustomJwtAccessDeniedHandler;
-import com.fours.tolevelup.service.user.UserServiceImpl;
+import com.fours.tolevelup.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationConfig {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final CorsConfig corsConfig;
     @Value("${jwt.secret-key}")
     private String key;

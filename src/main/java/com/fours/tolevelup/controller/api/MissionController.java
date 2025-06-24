@@ -5,7 +5,7 @@ import com.fours.tolevelup.controller.response.MissionResponse;
 import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.service.character.CharacterService;
 import com.fours.tolevelup.service.mission.MissionServiceImpl;
-import com.fours.tolevelup.service.user.UserServiceImpl;
+import com.fours.tolevelup.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +24,12 @@ public class MissionController {
 
     private final MissionServiceImpl missionService;
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     private final CharacterService characterService;
 
     @Autowired
-    public MissionController(MissionServiceImpl missionService, UserServiceImpl userService,
+    public MissionController(MissionServiceImpl missionService, UserService userService,
                              CharacterService characterService) {
         this.missionService = missionService;
         this.userService = userService;

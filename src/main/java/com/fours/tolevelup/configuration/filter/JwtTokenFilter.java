@@ -2,7 +2,7 @@ package com.fours.tolevelup.configuration.filter;
 
 
 import com.fours.tolevelup.model.UserDTO;
-import com.fours.tolevelup.service.user.UserServiceImpl;
+import com.fours.tolevelup.service.UserService;
 import com.fours.tolevelup.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final String key;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

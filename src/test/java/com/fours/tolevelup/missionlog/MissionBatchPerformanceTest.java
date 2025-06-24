@@ -3,7 +3,7 @@ package com.fours.tolevelup.missionlog;
 
 
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
