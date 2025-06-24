@@ -55,12 +55,11 @@ public class UserMissionService {
     }
 
     private MissionStatus getOppositeStatus(MissionStatus status) {
-        return switch (status) {
-            case DAILY_COMPLETE -> MissionStatus.DAILY_ONGOING;
-            case WEEKLY_COMPLETE -> MissionStatus.WEEKLY_ONGOING;
-            case DAILY_ONGOING -> MissionStatus.DAILY_COMPLETE;
-            case WEEKLY_ONGOING -> MissionStatus.WEEKLY_COMPLETE;
-        };
+        if (status == MissionStatus.DAILY_COMPLETE) return MissionStatus.DAILY_ONGOING;
+        if (status == MissionStatus.WEEKLY_COMPLETE) return MissionStatus.WEEKLY_ONGOING;
+        if (status == MissionStatus.DAILY_ONGOING) return MissionStatus.DAILY_COMPLETE;
+        if (status == MissionStatus.WEEKLY_ONGOING) return MissionStatus.WEEKLY_COMPLETE;
+        throw new TluApplicationException(ErrorCode.TYPE_NOT_FOUND);
     }
 
     private void userRightCheck(String user, User checkUser) {

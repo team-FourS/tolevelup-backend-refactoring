@@ -8,10 +8,8 @@ public enum ThemeType {
     WEEKLY;
 
     public static ThemeType of(String request) {
-        return switch (request) {
-            case "DAILY" -> DAILY;
-            case "WEEKLY" -> WEEKLY;
-            default -> throw new TluApplicationException(ErrorCode.TYPE_NOT_FOUND);
-        };
+        if (request.equals("DAILY")) return DAILY;
+        if (request.equals("WEEKLY")) return WEEKLY;
+        throw new TluApplicationException(ErrorCode.TYPE_NOT_FOUND);
     }
 }
