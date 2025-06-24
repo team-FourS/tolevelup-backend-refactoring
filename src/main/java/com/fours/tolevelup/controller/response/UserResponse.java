@@ -2,18 +2,15 @@ package com.fours.tolevelup.controller.response;
 
 
 import com.fours.tolevelup.model.*;
-import com.fours.tolevelup.model.entity.Alarm;
-import com.fours.tolevelup.model.entity.Comment;
 import com.fours.tolevelup.model.entity.Theme;
-import com.fours.tolevelup.model.entity.User;
+import com.fours.tolevelup.service.dto.AlarmDTO;
+import com.fours.tolevelup.service.dto.ThemeExpDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 
-import javax.inject.Inject;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;

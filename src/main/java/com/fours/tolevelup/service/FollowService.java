@@ -4,7 +4,7 @@ package com.fours.tolevelup.service;
 import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
 import com.fours.tolevelup.model.AlarmType;
-import com.fours.tolevelup.model.UserDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import com.fours.tolevelup.model.entity.Alarm;
 import com.fours.tolevelup.model.entity.Follow;
 import com.fours.tolevelup.model.entity.User;
@@ -30,9 +30,7 @@ public class FollowService {
         User user = getUserOrException(userId);
         User followingUser = getUserOrException(followingId);
         followRepository.findByFromUserAndFollowingUser(user, followingUser).ifPresent(it -> {
-                    throw new TluApplicationException(ErrorCode.ALREADY_FOLLOW);
-                }
-        );
+                    throw new TluApplicationException(ErrorCode.ALREADY_FOLLOW);});
         Follow follow = Follow.builder()
                 .fromUser(user)
                 .following_id(followingUser)

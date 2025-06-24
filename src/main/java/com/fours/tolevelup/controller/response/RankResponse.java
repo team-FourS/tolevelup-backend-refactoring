@@ -1,6 +1,6 @@
 package com.fours.tolevelup.controller.response;
 
-import com.fours.tolevelup.model.RankDTO;
+import com.fours.tolevelup.service.dto.RankDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.util.List;

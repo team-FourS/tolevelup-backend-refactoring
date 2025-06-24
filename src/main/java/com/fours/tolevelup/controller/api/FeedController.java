@@ -35,12 +35,6 @@ public class FeedController {
     private final CommentService commentService;
     private final CharacterService characterService;
 
-    public void get(
-            @PageableDefault(size = 10)
-            Pageable pageable
-    ) {
-        return;
-    }
 
     @GetMapping
     public Response<List<FeedResponse.FeedData>> feedList(Authentication authentication, Pageable pageable) {

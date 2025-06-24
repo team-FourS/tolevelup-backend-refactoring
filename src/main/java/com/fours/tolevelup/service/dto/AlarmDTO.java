@@ -1,9 +1,8 @@
-package com.fours.tolevelup.model;
+package com.fours.tolevelup.service.dto;
 
+import com.fours.tolevelup.model.AlarmType;
 import com.fours.tolevelup.model.entity.Alarm;
-import com.fours.tolevelup.model.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;

@@ -1,6 +1,6 @@
-package com.fours.tolevelup.model;
+package com.fours.tolevelup.service.dto;
 
-import com.fours.tolevelup.model.entity.ThemeExp;
+import com.fours.tolevelup.model.UserRole;
 import com.fours.tolevelup.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
 package com.fours.tolevelup.controller.response;
 
 
-import com.fours.tolevelup.model.UserDTO;
-import com.fours.tolevelup.model.UserDTO.publicUserData;
+import com.fours.tolevelup.service.dto.UserDTO;
+import com.fours.tolevelup.service.dto.UserDTO.publicUserData;
 import com.fours.tolevelup.model.entity.Comment;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
 package com.fours.tolevelup.controller.response;
 
 
-import com.fours.tolevelup.model.FeedDTO;
-import com.fours.tolevelup.model.MissionDTO;
-import com.fours.tolevelup.model.UserDTO;
+import com.fours.tolevelup.service.dto.FeedDTO;
+import com.fours.tolevelup.service.dto.MissionDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -2,8 +2,8 @@ package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
-import com.fours.tolevelup.model.RankDTO;
-import com.fours.tolevelup.model.UserDTO;
+import com.fours.tolevelup.service.dto.RankDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.MissionLogRepository;

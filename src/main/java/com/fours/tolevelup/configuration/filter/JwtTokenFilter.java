@@ -1,7 +1,7 @@
 package com.fours.tolevelup.configuration.filter;
 
 
-import com.fours.tolevelup.model.UserDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import com.fours.tolevelup.service.UserService;
 import com.fours.tolevelup.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;

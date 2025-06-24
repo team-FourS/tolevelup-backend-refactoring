@@ -1,4 +1,4 @@
-package com.fours.tolevelup.model;
+package com.fours.tolevelup.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
