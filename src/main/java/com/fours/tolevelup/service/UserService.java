@@ -20,7 +20,7 @@ import com.fours.tolevelup.repository.LikeRepository;
 import com.fours.tolevelup.repository.character.CharacterRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
-import com.fours.tolevelup.repository.theme.ThemeRepository;
+import com.fours.tolevelup.repository.ThemeRepository;
 import com.fours.tolevelup.repository.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.util.JwtTokenUtils;

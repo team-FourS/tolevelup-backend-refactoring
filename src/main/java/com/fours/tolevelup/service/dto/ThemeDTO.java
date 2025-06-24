@@ -1,15 +1,21 @@
 package com.fours.tolevelup.service.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fours.tolevelup.model.ThemeType;
+import com.fours.tolevelup.model.entity.Theme;
+import lombok.AllArgsConstructor;
 
-@Setter
-@Getter
-@NoArgsConstructor
+
+@AllArgsConstructor
 public class ThemeDTO {
     private int id;
     private String name;
-    private String type;
+    private ThemeType type;
 
+    public static ThemeDTO from(Theme theme) {
+        return new ThemeDTO(
+                theme.getId(),
+                theme.getName(),
+                theme.getType()
+        );
+    }
 }

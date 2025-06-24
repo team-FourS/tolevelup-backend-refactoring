@@ -5,6 +5,7 @@ import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
 import com.fours.tolevelup.model.MissionDTO;
 import com.fours.tolevelup.model.MissionStatus;
+import com.fours.tolevelup.model.ThemeType;
 import com.fours.tolevelup.model.entity.Character;
 import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
@@ -15,7 +16,7 @@ import com.fours.tolevelup.repository.character.CharacterRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
-import com.fours.tolevelup.repository.theme.ThemeRepository;
+import com.fours.tolevelup.repository.ThemeRepository;
 import com.fours.tolevelup.repository.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import java.sql.Date;
@@ -115,8 +116,8 @@ public class MissionService {
                 new TluApplicationException(ErrorCode.MISSION_LOG_NOT_FOUND));
     }
 
-    private Date getStartDate(String themeType) {
-        if (themeType.equals("weekly")) {
+    private Date getStartDate(ThemeType themeType) {
+        if (themeType == ThemeType.WEEKLY) {
             return Date.valueOf(LocalDate.now().minusDays(LocalDate.now().getDayOfWeek().getValue() - 1));
         }
         return Date.valueOf(LocalDate.now());
@@ -141,17 +142,12 @@ public class MissionService {
     }
 
     private MissionStatus changeStatus(MissionLog missionLog) {
-        switch (missionLog.getStatus()) {
-            case DAILY_COMPLETE:
-                return MissionStatus.DAILY_ONGOING;
-            case WEEKLY_COMPLETE:
-                return MissionStatus.WEEKLY_ONGOING;
-            case DAILY_ONGOING:
-                return MissionStatus.DAILY_COMPLETE;
-            case WEEKLY_ONGOING:
-                return MissionStatus.WEEKLY_COMPLETE;
-        }
-        throw new TluApplicationException(ErrorCode.INTERNAL_SERVER_ERROR);
+        return switch (missionLog.getStatus()) {
+            case DAILY_COMPLETE -> MissionStatus.DAILY_ONGOING;
+            case WEEKLY_COMPLETE -> MissionStatus.WEEKLY_ONGOING;
+            case DAILY_ONGOING -> MissionStatus.DAILY_COMPLETE;
+            case WEEKLY_ONGOING -> MissionStatus.WEEKLY_COMPLETE;
+        };
     }
 
 }

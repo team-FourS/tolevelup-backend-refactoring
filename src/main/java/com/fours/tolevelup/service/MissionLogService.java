@@ -1,12 +1,13 @@
 package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.model.MissionStatus;
+import com.fours.tolevelup.model.ThemeType;
 import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.MissionRepository;
-import com.fours.tolevelup.repository.theme.ThemeRepositoryImpl;
+import com.fours.tolevelup.repository.ThemeRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,11 +20,11 @@ import org.springframework.stereotype.Service;
 public class MissionLogService {
 
     private final MissionRepository missionRepository;
-    private final ThemeRepositoryImpl themeRepository;
+    private final ThemeRepository themeRepository;
 
 
     public List<MissionLog> assignDailyMissions(User user) {
-        List<Theme> themeList = themeRepository.findByType("daily");
+        List<Theme> themeList = themeRepository.findAllByType(ThemeType.DAILY);
         List<Mission> randomMissionList = new ArrayList<>();
 
         for (Theme theme : themeList) {
@@ -49,7 +50,7 @@ public class MissionLogService {
     }
 
     public List<MissionLog> assignWeeklyMissions(User user) {
-        List<Theme> themeList = themeRepository.findByType("weekly");
+        List<Theme> themeList = themeRepository.findAllByType(ThemeType.WEEKLY);
         List<Mission> randomMissionList = new ArrayList<>();
 
         for (Theme theme : themeList) {
