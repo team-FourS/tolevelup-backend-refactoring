@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
                             .build()
             );
         }
-        missionLogService.createMissionLog(user);
+        //missionLogService.createMissionLog(user);
     }
 
     @Override
