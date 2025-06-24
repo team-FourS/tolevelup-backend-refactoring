@@ -1,4 +1,4 @@
-package com.fours.tolevelup.service.mission;
+package com.fours.tolevelup.service;
 
 
 import com.fours.tolevelup.exception.ErrorCode;
@@ -16,7 +16,7 @@ import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepository;
-import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
+import com.fours.tolevelup.repository.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MissionServiceImpl implements MissionService {
+public class MissionService {
 
     private final UserRepository userRepository;
     private final UserCharacterRepository userCharacterRepository;

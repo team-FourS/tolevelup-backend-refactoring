@@ -3,8 +3,6 @@ package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.entity.Comment;
 import com.fours.tolevelup.model.entity.User;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

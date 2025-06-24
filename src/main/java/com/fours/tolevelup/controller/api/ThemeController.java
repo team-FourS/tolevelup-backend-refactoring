@@ -1,8 +1,8 @@
 package com.fours.tolevelup.controller.api;
 
 
-import com.fours.tolevelup.service.theme.ThemeDTO;
-import com.fours.tolevelup.service.theme.ThemeServiceImpl;
+import com.fours.tolevelup.service.dto.ThemeDTO;
+import com.fours.tolevelup.service.ThemeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

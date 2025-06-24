@@ -3,7 +3,7 @@ package com.fours.tolevelup.batch.mission.weekly;
 
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.service.missionlog.MissionLogService;
+import com.fours.tolevelup.service.MissionLogService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemProcessor;

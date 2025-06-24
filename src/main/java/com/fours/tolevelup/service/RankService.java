@@ -8,7 +8,7 @@ import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepository;
-import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
+import com.fours.tolevelup.repository.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Comparator;

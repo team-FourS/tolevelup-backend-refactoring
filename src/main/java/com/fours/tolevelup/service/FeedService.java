@@ -18,7 +18,6 @@ import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.service.character.CharacterDTO.UserCharacterFeed;
-import com.fours.tolevelup.service.mission.MissionServiceImpl;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class FeedService {
     private final FollowRepository followRepository;
     private final AlarmRepository alarmRepository;
     private final UserRepository userRepository;
-    private final MissionServiceImpl missionService;
+    private final MissionService missionService;
     private final LikeRepository likeRepository;
     private final MissionLogRepository missionLogRepository;
     private final UserCharacterRepository userCharacterRepository;

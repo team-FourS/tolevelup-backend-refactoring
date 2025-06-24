@@ -1,7 +1,8 @@
-package com.fours.tolevelup.service.theme;
+package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.repository.theme.ThemeCustomRepository;
+import com.fours.tolevelup.service.dto.ThemeDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ThemeServiceImpl implements ThemeService {
+public class ThemeServiceImpl {
 
     private final ThemeCustomRepository themeRepository;
 
@@ -21,7 +22,6 @@ public class ThemeServiceImpl implements ThemeService {
         this.themeRepository = themeRepository;
     }
 
-    @Override
     public List<ThemeDTO> findThemes() {
         List<Theme> themeList = themeRepository.findAll();
         List<ThemeDTO> themeDTOList = new ArrayList<>();

@@ -4,7 +4,7 @@ package com.fours.tolevelup.controller.api;
 import com.fours.tolevelup.controller.response.MissionResponse;
 import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.service.character.CharacterService;
-import com.fours.tolevelup.service.mission.MissionServiceImpl;
+import com.fours.tolevelup.service.MissionService;
 import com.fours.tolevelup.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/missions")
 public class MissionController {
 
-    private final MissionServiceImpl missionService;
+    private final MissionService missionService;
 
     private final UserService userService;
 
     private final CharacterService characterService;
 
     @Autowired
-    public MissionController(MissionServiceImpl missionService, UserService userService,
+    public MissionController(MissionService missionService, UserService userService,
                              CharacterService characterService) {
         this.missionService = missionService;
         this.userService = userService;

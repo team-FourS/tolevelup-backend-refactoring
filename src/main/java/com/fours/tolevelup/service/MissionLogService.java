@@ -1,4 +1,4 @@
-package com.fours.tolevelup.service.missionlog;
+package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.model.MissionStatus;
 import com.fours.tolevelup.model.entity.Mission;

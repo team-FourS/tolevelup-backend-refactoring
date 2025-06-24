@@ -1,4 +1,4 @@
-package com.fours.tolevelup.repository.themeexp;
+package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.ThemeExp;

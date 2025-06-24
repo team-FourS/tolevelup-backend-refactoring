@@ -1,6 +1,5 @@
-package com.fours.tolevelup.service.theme;
+package com.fours.tolevelup.service.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
