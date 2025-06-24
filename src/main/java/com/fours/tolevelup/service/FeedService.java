@@ -3,15 +3,11 @@ package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
-import com.fours.tolevelup.model.AlarmType;
 import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.model.UserDTO;
 import com.fours.tolevelup.model.UserDTO.feedUserData;
-import com.fours.tolevelup.model.entity.Alarm;
-import com.fours.tolevelup.model.entity.Like;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;
-import com.fours.tolevelup.repository.AlarmRepository;
 import com.fours.tolevelup.repository.FollowRepository;
 import com.fours.tolevelup.repository.LikeRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
@@ -25,14 +21,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
 public class FeedService {
 
     private final FollowRepository followRepository;
-    private final AlarmRepository alarmRepository;
     private final UserRepository userRepository;
     private final MissionService missionService;
     private final LikeRepository likeRepository;
@@ -88,8 +83,6 @@ public class FeedService {
     private boolean getFollowStatus(User fromUser, User followUser) {
         return followRepository.findByFromUserAndFollowingUser(fromUser, followUser).isPresent();
     }
-
-
 
     private long getFeedLikeCount(String userId) {
         User user = getUserOrException(userId);

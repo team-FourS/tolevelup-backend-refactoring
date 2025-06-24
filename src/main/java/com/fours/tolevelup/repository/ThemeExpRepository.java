@@ -24,9 +24,6 @@ public interface ThemeExpRepository extends JpaRepository<ThemeExp, String> {
     @Query("delete from ThemeExp t where t.user = :uid")
     void deleteAllByUser(@Param("uid") User user);
 
-    @Query("select t from ThemeExp t where t.user.id=:uid")
-    List<ThemeExp> getThemeExp(@Param("uid") String user_id);
-
     @Query("select te from ThemeExp te where te.user.id =:uid and te.theme.id =:tid")
     Optional<ThemeExp> getThemeExpByUserAndTheme(@Param("uid") String userId, @Param("tid") int themeId);
 

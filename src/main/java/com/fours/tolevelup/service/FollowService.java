@@ -64,20 +64,21 @@ public class FollowService {
         return followRepository.countAllByFromUserId(userId);
     }
 
-    public Slice<UserDTO.publicUserData> getFollowingList(String id, Pageable pageable) {
+    public Slice<UserDTO.publicUserData> getFollowingList(String userId, Pageable pageable) {
         return followRepository
-                .findByUser(id, pageable)
-                .map(UserDTO.publicUserData::fromUser);
+                .findAllByFromUserId(userId, pageable)
+                .map(follow -> UserDTO.publicUserData.fromUser(follow.getFollowingUser()));
     }
 
     public Slice<UserDTO.publicUserData> getFollowerList(String userId, Pageable pageable) {
         return followRepository
-                .findByFollowingUser(userId, pageable)
-                .map(UserDTO.publicUserData::fromUser);
+                .findAllByFollowingUserId(userId, pageable)
+                .map(follow -> UserDTO.publicUserData.fromUser(follow.getFromUser()));
+
     }
 
     public long getFollowerCounts(String userId) {
-        User user = getUserOrException(userId);
+        getUserOrException(userId);
         return followRepository.countAllByFollowingUserId(userId);
     }
 

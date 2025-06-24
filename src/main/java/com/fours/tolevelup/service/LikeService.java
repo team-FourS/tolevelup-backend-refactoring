@@ -52,10 +52,11 @@ public class LikeService {
     public void deleteLike(String fromId, String toId) {
         getUserOrException(fromId);
         getUserOrException(toId);
-        Like like = likeRepository.findByFromUserIdAndToUserId(fromId, toId).orElseThrow(() ->
-                new TluApplicationException(ErrorCode.LIKE_NOT_FOUND));
+        Like like = likeRepository.findByFromUserIdAndToUserId(fromId, toId)
+                .orElseThrow(() -> new TluApplicationException(ErrorCode.LIKE_NOT_FOUND));
         likeRepository.delete(like);
     }
+
 
     private User getUserOrException(String id) {
         return userRepository.findById(id).orElseThrow(() ->
