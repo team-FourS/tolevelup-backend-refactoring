@@ -29,29 +29,6 @@ public class FeedDTO {
         private long thisCommentCounts;
     }
 
-
-    @Getter
-    @AllArgsConstructor
-    public static class CommentData{
-        private Long commentId;
-        private UserDTO.publicUserData fromUserData;
-        private UserDTO.publicUserData toUserData;
-        private String comment;
-        private Timestamp registeredAt;
-        private Timestamp updatedAt;
-
-        public static CommentData fromComment(Comment comment){
-            return new CommentData(
-                    comment.getId(),
-                    UserDTO.publicUserData.fromUser(comment.getFromUser()),
-                    UserDTO.publicUserData.fromUser(comment.getToUser()),
-                    comment.getComment(),
-                    comment.getRegisteredAt(),
-                    comment.getUpdatedAt()
-            );
-        }
-    }
-
     @Getter
     @Builder
     @AllArgsConstructor

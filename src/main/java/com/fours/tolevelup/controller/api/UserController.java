@@ -178,7 +178,7 @@ public class UserController {
 
     @GetMapping("/comments/send")
     public Response<Page<UserResponse.SentComments>> sentCommentList(Authentication authentication, Pageable pageable) {
-        return Response.success(commentService.sentComments(authentication.getName(), pageable)
+        return Response.success(commentService.findAllSentComments(authentication.getName(), pageable)
                 .map(UserResponse.SentComments::fromComment));
     }
 
@@ -190,7 +190,7 @@ public class UserController {
     @GetMapping("/comments/receive")
     public Response<Page<UserResponse.ReceivedComments>> receivedCommentList(Authentication authentication,
                                                                              Pageable pageable) {
-        return Response.success(commentService.receivedComments(authentication.getName(), pageable)
+        return Response.success(commentService.findAllReceivedComments(authentication.getName(), pageable)
                 .map(UserResponse.ReceivedComments::fromComment));
     }
 

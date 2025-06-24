@@ -61,26 +61,4 @@ public class FeedResponse {
         }
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class Comment{
-        private Long commentId;
-        private UserDTO.publicUserData fromUserData;
-        private UserDTO.publicUserData toUserData;
-        private String comment;
-        private Timestamp registeredAt;
-        private Timestamp updatedAt;
-
-        public static Comment fromDTO(FeedDTO.CommentData commentData){
-            return new Comment(
-                    commentData.getCommentId(),
-                    commentData.getFromUserData(),
-                    commentData.getToUserData(),
-                    commentData.getComment(),
-                    commentData.getRegisteredAt(),
-                    commentData.getUpdatedAt()
-            );
-        }
-    }
-
 }

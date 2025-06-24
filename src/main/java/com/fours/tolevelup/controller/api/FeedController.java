@@ -1,9 +1,9 @@
 package com.fours.tolevelup.controller.api;
 
 import com.fours.tolevelup.controller.request.CommentRequest;
+import com.fours.tolevelup.controller.response.CommentResponse;
 import com.fours.tolevelup.controller.response.FeedResponse;
 import com.fours.tolevelup.controller.response.Response;
-import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.service.CommentService;
 import com.fours.tolevelup.service.FeedService;
 import com.fours.tolevelup.service.LikeService;
@@ -85,12 +85,12 @@ public class FeedController {
     }
 
     @GetMapping("/{userId}/comments")
-    public Response<Page<FeedResponse.FeedComments>> feedCommentList(
+    public Response<Page<CommentResponse>> feedCommentList(
             @PathVariable("userId") String userId,
             Pageable pageable
     ) {
         return Response.success(
-                commentService.getFeedComments(userId, pageable).map(FeedResponse.FeedComments::fromComment));
+                commentService.getTodayComments(userId, pageable));
     }
 
     @PostMapping("/{id}/comments")
@@ -99,18 +99,18 @@ public class FeedController {
             @PathVariable("id") String userId,
             @RequestBody CommentRequest request
     ) {
-        commentService.sendComment(authentication.getName(), userId, request.getComment());
+        commentService.createComment(authentication.getName(), userId, request.getComment());
         return Response.success("코멘트 전송");
     }
 
     @PutMapping("/comments/{id}")
-    public Response<FeedResponse.Comment> modifyComment(
+    public Response<CommentResponse> modifyComment(
             Authentication authentication,
             @PathVariable("id") Long commentId,
             @RequestBody CommentRequest request
     ) {
-        FeedDTO.CommentData modifyComment =commentService.modifyComment(authentication.getName(), commentId, request.getComment());
-        return Response.success(FeedResponse.Comment.fromDTO(modifyComment));
+        return Response.success(commentService
+                .modifyComment(authentication.getName(), commentId, request.getComment()));
     }
 
     @DeleteMapping("/comments/{cid}")

@@ -89,10 +89,6 @@ public class UserResponse {
     }
 
 
-
-
-
-
     @Getter
     @AllArgsConstructor
     public static class FollowerList{
@@ -107,7 +103,7 @@ public class UserResponse {
         private String comment;
         private Timestamp registeredAt;
         private Timestamp updatedAt;
-        public static SentComments fromComment(FeedDTO.CommentData comment){
+        public static SentComments fromComment(CommentResponse comment){
             return new SentComments(
                     comment.getCommentId(),
                     comment.getToUserData(),
@@ -126,7 +122,7 @@ public class UserResponse {
         private String comment;
         private Timestamp registeredAt;
         private Timestamp updatedAt;
-        public static ReceivedComments fromComment(FeedDTO.CommentData comment){
+        public static ReceivedComments fromComment(CommentResponse comment){
             return new ReceivedComments(
                     comment.getCommentId(),
                     comment.getFromUserData(),
