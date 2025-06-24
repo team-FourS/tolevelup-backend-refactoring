@@ -41,24 +41,4 @@ public class FeedResponse {
         private List<FeedDTO.CharacterData> characterDataList;
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class FeedComments{
-        private Long commentId;
-        private UserDTO.publicUserData fromUserData;
-        private String comment;
-        private Timestamp registeredAt;
-        private Timestamp updatedAt;
-
-        public static FeedComments fromComment(FeedDTO.CommentData commentData){
-            return new FeedComments(
-                    commentData.getCommentId(),
-                    commentData.getFromUserData(),
-                    commentData.getComment(),
-                    commentData.getRegisteredAt(),
-                    commentData.getUpdatedAt()
-            );
-        }
-    }
-
 }
