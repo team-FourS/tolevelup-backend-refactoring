@@ -1,4 +1,4 @@
-package com.fours.tolevelup.repository.missionlog;
+package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.MissionStatus;
 import com.fours.tolevelup.model.entity.Mission;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface MissionLogRepository extends JpaRepository<MissionLog, Long>, MissionLogCustomRepository {
+public interface MissionLogRepository extends JpaRepository<MissionLog, Long> {
 
 
     @Query("select ml.user from MissionLog ml where ml.end_time >= current_date " +

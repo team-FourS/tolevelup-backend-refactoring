@@ -4,6 +4,7 @@ import com.fours.tolevelup.controller.request.CommentRequest;
 import com.fours.tolevelup.controller.response.FeedResponse;
 import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.model.FeedDTO;
+import com.fours.tolevelup.service.CommentService;
 import com.fours.tolevelup.service.FeedService;
 import com.fours.tolevelup.service.character.CharacterDTO;
 import com.fours.tolevelup.service.character.CharacterDTO.UserCharacterInfo;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
 
     private final FeedService feedService;
+    private final CommentService commentService;
     private final CharacterService characterService;
 
     @GetMapping
@@ -58,12 +60,6 @@ public class FeedController {
     }
 
 
-    /*
-        @GetMapping("/{userId}/likes")
-        public Response<Long> likeCount(@PathVariable("userId")String userId){
-            return Response.success(feedService.getFeedLikeCount(userId));
-        }
-    */
     @GetMapping("/{user_id}/likes/{date}")
     public Response<Long> likeCount(@PathVariable("user_id") String userId, @PathVariable("date") Date date) {
         return Response.success(feedService.getDateLikeCount(userId, date));
@@ -82,31 +78,37 @@ public class FeedController {
     }
 
     @GetMapping("/{userId}/comments")
-    public Response<Page<FeedResponse.FeedComments>> feedCommentList(@PathVariable("userId") String userId,
-                                                                     Pageable pageable) {
+    public Response<Page<FeedResponse.FeedComments>> feedCommentList(
+            @PathVariable("userId") String userId,
+            Pageable pageable
+    ) {
         return Response.success(
-                feedService.getFeedComments(userId, pageable).map(FeedResponse.FeedComments::fromComment));
+                commentService.getFeedComments(userId, pageable).map(FeedResponse.FeedComments::fromComment));
     }
 
     @PostMapping("/{id}/comments")
-    public Response<String> comment(Authentication authentication, @PathVariable("id") String userId,
-                                    @RequestBody CommentRequest request) {
-        feedService.sendComment(authentication.getName(), userId, request.getComment());
+    public Response<String> comment(
+            Authentication authentication,
+            @PathVariable("id") String userId,
+            @RequestBody CommentRequest request
+    ) {
+        commentService.sendComment(authentication.getName(), userId, request.getComment());
         return Response.success("코멘트 전송");
     }
 
-    @PutMapping("/comments/{cid}")
-    public Response<FeedResponse.Comment> modifyComment(Authentication authentication,
-                                                        @PathVariable("cid") Long commentId,
-                                                        @RequestBody CommentRequest request) {
-        FeedDTO.CommentData modifyComment = feedService.modifyComment(authentication.getName(), commentId,
-                request.getComment());
+    @PutMapping("/comments/{id}")
+    public Response<FeedResponse.Comment> modifyComment(
+            Authentication authentication,
+            @PathVariable("id") Long commentId,
+            @RequestBody CommentRequest request
+    ) {
+        FeedDTO.CommentData modifyComment =commentService.modifyComment(authentication.getName(), commentId, request.getComment());
         return Response.success(FeedResponse.Comment.fromDTO(modifyComment));
     }
 
     @DeleteMapping("/comments/{cid}")
     public Response<String> deleteComment(Authentication authentication, @PathVariable("cid") Long commentId) {
-        feedService.deleteComment(authentication.getName(), commentId);
+        commentService.deleteComment(authentication.getName(), commentId);
         return Response.success("코멘트 삭제");
     }
 

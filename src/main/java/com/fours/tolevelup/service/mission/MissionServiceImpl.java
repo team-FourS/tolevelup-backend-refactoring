@@ -14,7 +14,7 @@ import com.fours.tolevelup.model.entity.UserCharacter;
 import com.fours.tolevelup.repository.character.CharacterRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionRepository;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
+import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.theme.ThemeRepository;
 import com.fours.tolevelup.repository.themeexp.ThemeExpRepository;
 import com.fours.tolevelup.repository.UserRepository;

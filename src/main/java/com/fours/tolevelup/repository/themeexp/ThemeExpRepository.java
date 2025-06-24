@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface ThemeExpRepository extends JpaRepository<ThemeExp, String>, ThemeExpCustomRepository {
+public interface ThemeExpRepository extends JpaRepository<ThemeExp, String> {
 
     @Transactional
     @Modifying(clearAutomatically = true)

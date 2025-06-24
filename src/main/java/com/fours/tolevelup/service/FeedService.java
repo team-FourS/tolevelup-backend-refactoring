@@ -8,25 +8,21 @@ import com.fours.tolevelup.model.FeedDTO;
 import com.fours.tolevelup.model.UserDTO;
 import com.fours.tolevelup.model.UserDTO.feedUserData;
 import com.fours.tolevelup.model.entity.Alarm;
-import com.fours.tolevelup.model.entity.Comment;
 import com.fours.tolevelup.model.entity.Like;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;
 import com.fours.tolevelup.repository.AlarmRepository;
-import com.fours.tolevelup.repository.CommentRepository;
 import com.fours.tolevelup.repository.FollowRepository;
 import com.fours.tolevelup.repository.LikeRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
+import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.service.character.CharacterDTO.UserCharacterFeed;
 import com.fours.tolevelup.service.mission.MissionServiceImpl;
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -41,7 +37,6 @@ public class FeedService {
     private final UserRepository userRepository;
     private final MissionServiceImpl missionService;
     private final LikeRepository likeRepository;
-    private final CommentRepository commentRepository;
     private final MissionLogRepository missionLogRepository;
     private final UserCharacterRepository userCharacterRepository;
 
@@ -66,7 +61,7 @@ public class FeedService {
                             .userCompleteMissions(missionService.userToDayCompleteList(feedUser.getId()))
                             .myLikeChecked(getUserLikeChecked(userId, feedUser.getId()))
                             .thisLikeCounts(getFeedLikeCount(feedUser.getId()))
-                            .thisCommentCounts(getFeedCommentCounts(feedUser.getId()))
+                            //.thisCommentCounts(getFeedCommentCounts(feedUser.getId()))
                             .build()
             );
         }
@@ -132,52 +127,6 @@ public class FeedService {
         return likeRepository.countByDateAndToUser(date, user);
     }
 
-    private long getFeedCommentCounts(String userId) {
-        return commentRepository.findByFeedUser(userId).orElseGet(() -> 0L);
-    }
-
-    public Page<FeedDTO.CommentData> getFeedComments(String userId, Pageable pageable) {
-        User feedUser = getUserOrException(userId);
-        Page<FeedDTO.CommentData> comments = commentRepository.findByUser(feedUser, pageable)
-                .map(FeedDTO.CommentData::fromComment);
-        return comments;
-    }
-
-    @Transactional
-    public void sendComment(String fromId, String toId, String comment) {
-        User fromUser = getUserOrException(fromId);
-        User toUser = getUserOrException(toId);
-        commentRepository.save(Comment.builder().fromUser(fromUser).toUser(toUser).comment(comment).build());
-        alarmRepository.save(
-                Alarm.builder().toUser(toUser).fromUser(fromUser).alarmType(AlarmType.NEW_COMMENT).build());
-    }
-
-    @Transactional
-    public FeedDTO.CommentData modifyComment(String userId, Long commentId, String modifyComment) {
-        User user = getUserOrException(userId);
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new TluApplicationException(ErrorCode.COMMENT_NOT_FOUND));
-        userSameCheck(user, comment.getFromUser());
-        commentRepository.updateComment(commentId, modifyComment, java.sql.Timestamp.valueOf(LocalDateTime.now()));
-        alarmRepository.save(
-                Alarm.builder().toUser(comment.getToUser()).fromUser(user).alarmType(AlarmType.MODIFY_COMMENT).build());
-        return FeedDTO.CommentData.fromComment(commentRepository.findById(commentId).get());
-    }
-
-    @Transactional
-    public void deleteComment(String userId, Long commentId) {
-        User user = getUserOrException(userId);
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new TluApplicationException(ErrorCode.COMMENT_NOT_FOUND));
-        userSameCheck(user, comment.getFromUser());
-        commentRepository.delete(comment);
-    }
-
-    private void userSameCheck(User user, User checkUser) {
-        if (user != checkUser) {
-            throw new TluApplicationException(ErrorCode.INVALID_PERMISSION);
-        }
-    }
 
     private User getUserOrException(String id) {
         return userRepository.findById(id).orElseThrow(() ->

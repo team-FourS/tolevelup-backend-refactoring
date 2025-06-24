@@ -1,6 +1,7 @@
 package com.fours.tolevelup.model.entity;
 
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Comment {
@@ -42,6 +43,14 @@ public class Comment {
         this.registeredAt = java.sql.Timestamp.valueOf(LocalDateTime.now());
     }
 
+    @PreUpdate
+    void updatedAt(){
+        this.updatedAt = java.sql.Timestamp.valueOf(LocalDateTime.now());
+    }
+
+    public void updateComment(String comment){
+        this.comment = comment;
+    }
 
     @Builder
     public Comment(User fromUser,User toUser,String comment){
