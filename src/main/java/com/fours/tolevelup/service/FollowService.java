@@ -33,8 +33,10 @@ public class FollowService {
                     throw new TluApplicationException(ErrorCode.ALREADY_FOLLOW);
                 }
         );
-        Follow follow = Follow.builder().fromUser(getUserOrException(userId))
-                .following_id(getUserOrException(followingId)).build();
+        Follow follow = Follow.builder()
+                .fromUser(user)
+                .following_id(followingUser)
+                .build();
         followRepository.save(follow);
         alarmRepository.save(Alarm.builder().toUser(followingUser).fromUser(user).alarmType(AlarmType.FOLLOW).build());
     }
@@ -59,27 +61,29 @@ public class FollowService {
 
     public long getFollowingCounts(String userId) {
         User user = getUserOrException(userId);
-        return followRepository.countByMyFollowing(user).orElseGet(() -> 0L);
+        return followRepository.countAllByFromUserId(userId);
     }
 
     public Slice<UserDTO.publicUserData> getFollowingList(String id, Pageable pageable) {
-        Slice<User> followUser = followRepository.findByUser(id, pageable);
-        return followUser.map(UserDTO.publicUserData::fromUser);
+        return followRepository
+                .findByUser(id, pageable)
+                .map(UserDTO.publicUserData::fromUser);
+    }
+
+    public Slice<UserDTO.publicUserData> getFollowerList(String userId, Pageable pageable) {
+        return followRepository
+                .findByFollowingUser(userId, pageable)
+                .map(UserDTO.publicUserData::fromUser);
     }
 
     public long getFollowerCounts(String userId) {
         User user = getUserOrException(userId);
-        return followRepository.countByMyFollower(user).orElseGet(() -> 0L);
-    }
-
-
-    public Slice<UserDTO.publicUserData> getFollowerList(String userId, Pageable pageable) {
-        Slice<User> followerList = followRepository.findByFollowingUser(userId, pageable);
-        return followerList.map(UserDTO.publicUserData::fromUser);
+        return followRepository.countAllByFollowingUserId(userId);
     }
 
     private User getUserOrException(String id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new TluApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s is duplicated", id)));
     }
+
 }

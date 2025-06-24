@@ -50,7 +50,6 @@ public class MissionService {
         Theme theme = themeRepository.findById(themeId).orElseThrow(() ->
                 new TluApplicationException(ErrorCode.THEME_NOT_FOUND));
         Date startDate = getStartDate(theme.getType());
-        System.out.println(startDate);
         return missionLogRepository.findByThemAndDate(user, theme, startDate).stream()
                 .map(MissionDTO.mission::fromMissionLog)
                 .collect(Collectors.toList());
