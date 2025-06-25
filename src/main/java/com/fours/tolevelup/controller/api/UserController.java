@@ -3,13 +3,11 @@ package com.fours.tolevelup.controller.api;
 
 import com.fours.tolevelup.controller.request.UserRequest;
 import com.fours.tolevelup.controller.request.UserUpdateRequest;
-import com.fours.tolevelup.controller.response.RankResponse;
 import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.controller.response.StatsResponse;
 import com.fours.tolevelup.controller.response.UserResponse;
 import com.fours.tolevelup.service.CommentService;
 import com.fours.tolevelup.service.FollowService;
-import com.fours.tolevelup.service.RankService;
 import com.fours.tolevelup.service.StatsService;
 import com.fours.tolevelup.service.character.CharacterService;
 import com.fours.tolevelup.service.UserService;
@@ -39,7 +37,6 @@ public class UserController {
     private final CommentService commentService;
     private final StatsService statsService;
     private final CharacterService characterService;
-    private final RankService rankService;
 
     @PostMapping("/join")
     public Response<String> join(@RequestBody UserRequest.JoinForm request) {
@@ -64,23 +61,6 @@ public class UserController {
         return Response.success(userService.findUserAllData(authentication.getName()));
     }
 
-    @GetMapping("/rank")
-    public Response<RankResponse.RankList> monthExpTotal(Authentication authentication,
-                                                         @RequestParam("year") String year,
-                                                         @RequestParam("month") String month, Pageable pageable) {
-        return Response.success(new RankResponse.RankList(
-                rankService.getRankTotalList(authentication.getName(), String.format("%s-%s", year, month), pageable)));
-    }
-
-    @GetMapping("/rank/{theme}")
-    public Response<RankResponse.ThemeRankList> themeExpTotal(Authentication authentication,
-                                                              @PathVariable("theme") int themeId,
-                                                              @RequestParam("year") String year,
-                                                              @RequestParam("month") String month, Pageable pageable) {
-        return Response.success(new RankResponse.ThemeRankList(
-                rankService.getThemeRankList(authentication.getName(), themeId, String.format("%s-%s", year, month),
-                        pageable)));
-    }
 
     @PostMapping("/password")
     public Response<Boolean> userPassword(Authentication authentication, @RequestBody UserRequest.Password password) {
