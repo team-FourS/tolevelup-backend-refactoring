@@ -11,11 +11,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    @Query("select lk from Like lk where lk.fromUser = :f_user and lk.date = current_date and lk.toUser = :t_user")
-    Optional<Like> findByUserAndFeedUser(@Param("f_user") User fromUser, @Param("t_user") User toUser);
+    Optional<Like> findByFromUserIdAndToUserId(String fromUserId, String toUserId);
 
-    @Query("select count(lk) from Like lk where lk.toUser = :user")
-    long countAllByToUser(@Param("user") User user);
+    long countAllByToUserId(String toUserId);
 
     @Query("select count(lk) from Like lk where lk.toUser = :user and lk.date >= current_date")
     Optional<Long> countByToUser(@Param("user") User user);

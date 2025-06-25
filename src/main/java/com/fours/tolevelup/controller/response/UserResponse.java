@@ -2,18 +2,15 @@ package com.fours.tolevelup.controller.response;
 
 
 import com.fours.tolevelup.model.*;
-import com.fours.tolevelup.model.entity.Alarm;
-import com.fours.tolevelup.model.entity.Comment;
 import com.fours.tolevelup.model.entity.Theme;
-import com.fours.tolevelup.model.entity.User;
+import com.fours.tolevelup.service.dto.AlarmDTO;
+import com.fours.tolevelup.service.dto.ThemeExpDTO;
+import com.fours.tolevelup.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 
-import javax.inject.Inject;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -89,10 +86,6 @@ public class UserResponse {
     }
 
 
-
-
-
-
     @Getter
     @AllArgsConstructor
     public static class FollowerList{
@@ -107,7 +100,7 @@ public class UserResponse {
         private String comment;
         private Timestamp registeredAt;
         private Timestamp updatedAt;
-        public static SentComments fromComment(FeedDTO.CommentData comment){
+        public static SentComments fromComment(CommentResponse comment){
             return new SentComments(
                     comment.getCommentId(),
                     comment.getToUserData(),
@@ -126,7 +119,7 @@ public class UserResponse {
         private String comment;
         private Timestamp registeredAt;
         private Timestamp updatedAt;
-        public static ReceivedComments fromComment(FeedDTO.CommentData comment){
+        public static ReceivedComments fromComment(CommentResponse comment){
             return new ReceivedComments(
                     comment.getCommentId(),
                     comment.getFromUserData(),

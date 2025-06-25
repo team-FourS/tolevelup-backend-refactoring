@@ -20,16 +20,12 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Optional<Follow> findByFromUserAndFollowingUser(User user, User follow);
 
-    @Query("select count(f) from Follow f where f.fromUser =:user")
-    Optional<Long> countByMyFollowing(@Param("user") User user);
+    long countAllByFollowingUserId(String followingUserId);
 
-    @Query("select count(f) from Follow f where f.followingUser =:user")
-    Optional<Long> countByMyFollower(@Param("user") User user);
+    long countAllByFromUserId(String fromUserId);
 
-    @Query("select f.followingUser from Follow f where f.fromUser.id = :uid order by f.update_date desc")
-    Slice<User> findByUser(@Param("uid") String userId, Pageable pageable);
+    Slice<Follow> findAllByFromUserId(String fromUserId, Pageable pageable);
 
-    @Query("select f.fromUser from Follow f where f.followingUser.id = :uid order by f.update_date desc")
-    Slice<User> findByFollowingUser(@Param("uid") String userId, Pageable pageable);
+    Slice<Follow> findAllByFollowingUserId(String followingUserId, Pageable pageable);
 
 }

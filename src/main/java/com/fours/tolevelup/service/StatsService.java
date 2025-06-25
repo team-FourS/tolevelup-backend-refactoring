@@ -2,12 +2,12 @@ package com.fours.tolevelup.service;
 
 import com.fours.tolevelup.exception.ErrorCode;
 import com.fours.tolevelup.exception.TluApplicationException;
-import com.fours.tolevelup.model.StatsDTO;
+import com.fours.tolevelup.service.dto.StatsDTO;
 import com.fours.tolevelup.model.entity.Theme;
 import com.fours.tolevelup.model.entity.User;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
-import com.fours.tolevelup.repository.theme.ThemeRepository;
-import com.fours.tolevelup.repository.user.UserRepository;
+import com.fours.tolevelup.repository.MissionLogRepository;
+import com.fours.tolevelup.repository.ThemeRepository;
+import com.fours.tolevelup.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

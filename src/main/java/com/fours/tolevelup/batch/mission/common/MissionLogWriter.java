@@ -2,7 +2,7 @@ package com.fours.tolevelup.batch.mission.common;
 
 
 import com.fours.tolevelup.model.entity.MissionLog;
-import com.fours.tolevelup.repository.missionlog.MissionLogRepository;
+import com.fours.tolevelup.repository.MissionLogRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemWriter;

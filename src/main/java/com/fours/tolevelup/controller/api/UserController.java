@@ -2,6 +2,7 @@ package com.fours.tolevelup.controller.api;
 
 
 import com.fours.tolevelup.controller.request.UserRequest;
+import com.fours.tolevelup.controller.request.UserUpdateRequest;
 import com.fours.tolevelup.controller.response.RankResponse;
 import com.fours.tolevelup.controller.response.Response;
 import com.fours.tolevelup.controller.response.StatsResponse;
@@ -11,7 +12,7 @@ import com.fours.tolevelup.service.FollowService;
 import com.fours.tolevelup.service.RankService;
 import com.fours.tolevelup.service.StatsService;
 import com.fours.tolevelup.service.character.CharacterService;
-import com.fours.tolevelup.service.user.UserServiceImpl;
+import com.fours.tolevelup.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final FollowService followService;
     private final CommentService commentService;
     private final StatsService statsService;
@@ -92,11 +93,11 @@ public class UserController {
     }
 
     @PutMapping("/information")
-    public Response<String> modifyInformation(Authentication authentication,
-                                              @RequestBody UserRequest.ModifyForm newDataForm) {
-        String type = userService.changeInformation(authentication.getName(), newDataForm.getType(),
-                newDataForm.getData());
-        return Response.success(type + " 수정");
+    public Response<String> modifyInformation(
+            Authentication authentication,
+            @RequestBody UserUpdateRequest request) {
+        userService.changeUserInformation(authentication.getName(), request);
+        return Response.success("유저 정보 변경 성공");
     }
 
     @PostMapping("/follow/{userId}")
@@ -177,7 +178,7 @@ public class UserController {
 
     @GetMapping("/comments/send")
     public Response<Page<UserResponse.SentComments>> sentCommentList(Authentication authentication, Pageable pageable) {
-        return Response.success(commentService.sentComments(authentication.getName(), pageable)
+        return Response.success(commentService.findAllSentComments(authentication.getName(), pageable)
                 .map(UserResponse.SentComments::fromComment));
     }
 
@@ -189,7 +190,7 @@ public class UserController {
     @GetMapping("/comments/receive")
     public Response<Page<UserResponse.ReceivedComments>> receivedCommentList(Authentication authentication,
                                                                              Pageable pageable) {
-        return Response.success(commentService.receivedComments(authentication.getName(), pageable)
+        return Response.success(commentService.findAllReceivedComments(authentication.getName(), pageable)
                 .map(UserResponse.ReceivedComments::fromComment));
     }
 
