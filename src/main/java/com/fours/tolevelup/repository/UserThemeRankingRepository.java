@@ -16,4 +16,8 @@ public interface UserThemeRankingRepository extends JpaRepository<UserThemeRanki
             + "AND r.ranking BETWEEN :start AND :end")
     Optional<List<UserThemeRanking>> findByRankingRange(int themeId, int year, int month, int start, int end);
 
+    Optional<UserThemeRanking> findByUserIdAndThemeIdAndYearAndMonth(String userId, int themeId, int year, int month);
+
 }
+
+
