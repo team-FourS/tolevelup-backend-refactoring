@@ -74,7 +74,7 @@ public interface MissionLogRepository extends JpaRepository<MissionLog, Long> {
             "rank() over (order by sum(exp) desc ) as ranking" +
             " from mission_log ml" +
             " left outer join mission m on ml.mission_id = m.id" +
-            " where DATE_FORMAT(ml.end_time, '%Y-%m') = :date and m.theme_id = :tid" +
+            " where DATE_FORMAT(ml.start_date, '%Y-%m') = :date and m.theme_id = :tid" +
             " group by ml.user_id, m.theme_id) i" +
             " where i.user_id = :uid", nativeQuery = true)
     Integer themeRank(@Param("tid") int theme_id, @Param("date") String date, @Param("uid") String user_id);

@@ -2,7 +2,7 @@ package com.fours.tolevelup.controller.api;
 
 
 import com.fours.tolevelup.controller.request.UserCharacterRequest;
-import com.fours.tolevelup.controller.response.Response;
+import com.fours.tolevelup.controller.response.common.Response;
 import com.fours.tolevelup.controller.response.UserCharacterResponse;
 import com.fours.tolevelup.service.character.CharacterDTO;
 import com.fours.tolevelup.service.character.CharacterService;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;

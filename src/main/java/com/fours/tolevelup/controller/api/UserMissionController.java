@@ -2,7 +2,7 @@ package com.fours.tolevelup.controller.api;
 
 
 
-import com.fours.tolevelup.controller.response.Response;
+import com.fours.tolevelup.controller.response.common.Response;
 import com.fours.tolevelup.controller.response.UserThemeMissionResponse;
 import com.fours.tolevelup.service.UserMissionService;
 import com.fours.tolevelup.service.UserService;

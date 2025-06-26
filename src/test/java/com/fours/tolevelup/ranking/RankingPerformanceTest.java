@@ -63,6 +63,7 @@ public class RankingPerformanceTest {
     @Test
     void setUserThemeRanking() {;
         List<User> users = userRepository.findAll();
+        // Theme theme = themeRepository.findById(1).get()
         for(User u : users) {
             Long rank = Long.valueOf(missionLogRepository.themeRank(1, "2025-06", u.getId()));
             themeRankingRepository.save(UserThemeRanking.builder()

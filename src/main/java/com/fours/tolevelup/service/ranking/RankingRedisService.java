@@ -2,12 +2,12 @@ package com.fours.tolevelup.service.ranking;
 
 
 import com.fours.tolevelup.service.ranking.dto.RedisRankingDto;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,38 +25,34 @@ public class RankingRedisService {
         zSetOps.incrementScore(String.format(THEME_RANK, themeId), userId, exp);
     }
 
-    public List<RedisRankingDto> getRankListBy(int start, int size) {
-        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<String>> range = zSetOps
-                .reverseRangeWithScores(BASIC_RANK, start, start + size);
-        return getRankList(start, range);
+    public Long getRank(String userId) {
+        return redisTemplate.opsForZSet().rank(userId, BASIC_RANK);
     }
 
-    public List<RedisRankingDto> getThemeRankListBy(int themeId, int start, int size) {
+    public Long getThemeRank(String userId, int themeId) {
         ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<String>> range = zSetOps
-                .reverseRangeWithScores(String.format(THEME_RANK, themeId), start, start + size);
-        return getRankList(size, range);
+        return zSetOps.rank(String.format(THEME_RANK, themeId), userId);
     }
 
-    private List<RedisRankingDto> getRankList(
-            int start, Set<ZSetOperations.TypedTuple<String>> range
-    ) {
-        if (range == null || range.isEmpty()) {
-            return List.of();
-        }
-        List<RedisRankingDto> rankingList = new ArrayList<>();
-        long rank = start;
-        for(ZSetOperations.TypedTuple<String> tuple : range) {
-            rankingList.add(new RedisRankingDto(
-                    tuple.getValue(),
-                    rank++,
-                    tuple.getScore()
-            ));
-        }
-        return rankingList;
+    public List<RedisRankingDto> getRankingList(int start, int end) {
+        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+        Set<TypedTuple<String>> range = zSetOps.reverseRangeWithScores(BASIC_RANK, start, end);
+        return (range == null || range.isEmpty())
+                ? List.of()
+                : range.stream().map(tuple ->
+                        RedisRankingDto.of(tuple, getRank(tuple.getValue()))
+                ).toList();
+    }
+
+    public List<RedisRankingDto> getThemeRankingList(int themeId, int start, int end) {
+        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+        Set<TypedTuple<String>> range = zSetOps.reverseRangeWithScores(String.format(THEME_RANK, themeId), start, end);
+        return (range == null || range.isEmpty())
+                ? List.of()
+                : range.stream().map(tuple ->
+                        RedisRankingDto.of(tuple, getThemeRank(tuple.getValue(), themeId))
+                ).toList();
     }
 
 }
-
 

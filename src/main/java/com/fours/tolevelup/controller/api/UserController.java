@@ -3,7 +3,7 @@ package com.fours.tolevelup.controller.api;
 
 import com.fours.tolevelup.controller.request.UserRequest;
 import com.fours.tolevelup.controller.request.UserUpdateRequest;
-import com.fours.tolevelup.controller.response.Response;
+import com.fours.tolevelup.controller.response.common.Response;
 import com.fours.tolevelup.controller.response.StatsResponse;
 import com.fours.tolevelup.controller.response.UserResponse;
 import com.fours.tolevelup.service.CommentService;

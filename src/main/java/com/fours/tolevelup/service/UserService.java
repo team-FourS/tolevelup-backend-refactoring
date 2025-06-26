@@ -44,7 +44,6 @@ public class UserService {
     private final LikeRepository likeRepository;
     private final ThemeExpRepository themeExpRepository;
     private final ThemeRepository themeRepository;
-    private final MissionLogAssignService missionLogAssignService;
     private final MissionLogRepository missionLogRepository;
     private final UserCharacterRepository userCharacterRepository;
     private final CharacterRepository characterRepository;
@@ -76,12 +75,16 @@ public class UserService {
         });
         userRepository.save(
                 User.builder().id(id).password(encoder.encode(password)).name(name).email(email).build());
-        List<Theme> themeList = themeRepository.findAll();
+
+        //List<Theme> themeList = themeRepository.findAll();
         User user = getUserOrException(id);
+        /*
         for (Theme theme : themeList) {
             themeExpRepository.save(
                     ThemeExp.builder().id(user.getId() + theme.getName()).user(user).theme(theme).build());
         }
+
+         */
         List<Character> characterList = characterRepository.findByLevel();
         for (Character character : characterList) {
             userCharacterRepository.save(

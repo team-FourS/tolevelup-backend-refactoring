@@ -2,6 +2,7 @@ package com.fours.tolevelup.service.ranking.dto;
 
 
 import com.fours.tolevelup.model.entity.User;
+import com.fours.tolevelup.model.entity.UserThemeRanking;
 import com.fours.tolevelup.service.dto.UserDTO.publicUserData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,30 +12,26 @@ import lombok.Getter;
 public class UserThemeRankingDto {
     private publicUserData userData;
     private int themeId;
-    private Double exp_total;
+    private Double totalExp;
     private Long rank;
 
-    public static UserThemeRankingDto of(
-            User user, int themeId, Double exp_total, Long rank
-    ) {
+    public static UserThemeRankingDto fromEntity(UserThemeRanking userThemeRanking) {
+        return new UserThemeRankingDto(
+                publicUserData.fromUser(userThemeRanking.getUser()),
+                userThemeRanking.getTheme().getId(),
+                userThemeRanking.getTotalExp(),
+                userThemeRanking.getRanking()
+        );
+    }
+
+    public static UserThemeRankingDto fromRedis(User user, int themeId, RedisRankingDto redisRankingDto) {
         return new UserThemeRankingDto(
                 publicUserData.fromUser(user),
                 themeId,
-                exp_total,
-                rank
+                redisRankingDto.getScore(),
+                redisRankingDto.getRanking()
         );
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
