@@ -25,7 +25,7 @@ public class RankingService {
     private final UserThemeRankingRepository themeRankingRepository;
 
     public List<UserRankingDto> getCurrentRankingList(int start, int end) {
-        return rankingRedisService.getRankingList(start, end)
+        return rankingRedisService.getRankingList(start-1, end+1)
                 .stream()
                 .map(redisRankingDto ->
                         UserRankingDto.fromRedis(
@@ -34,7 +34,7 @@ public class RankingService {
     }
 
     public List<UserThemeRankingDto> getThemeCurrentRankingList(int start, int end, int themeId) {
-        return rankingRedisService.getThemeRankingList(themeId, start, end)
+        return rankingRedisService.getThemeRankingList(themeId, start-1, end+1)
                 .stream()
                 .map(redisRankingDto ->
                         UserThemeRankingDto.fromRedis(

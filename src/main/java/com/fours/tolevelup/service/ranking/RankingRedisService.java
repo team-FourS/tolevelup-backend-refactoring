@@ -26,12 +26,12 @@ public class RankingRedisService {
     }
 
     public Long getRank(String userId) {
-        return redisTemplate.opsForZSet().rank(userId, BASIC_RANK);
+        return redisTemplate.opsForZSet().reverseRank(userId, BASIC_RANK);
     }
 
     public Long getThemeRank(String userId, int themeId) {
         ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
-        return zSetOps.rank(String.format(THEME_RANK, themeId), userId);
+        return zSetOps.reverseRank(String.format(THEME_RANK, themeId), userId);
     }
 
     public List<RedisRankingDto> getRankingList(int start, int end) {

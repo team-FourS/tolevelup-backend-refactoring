@@ -14,7 +14,7 @@ public class RedisRankingDto {
     public static RedisRankingDto of(TypedTuple<String> tuple, Long ranking) {
         return new RedisRankingDto(
                 tuple.getValue(),
-                ranking,
+                ranking + 1,
                 tuple.getScore()
         );
     }
