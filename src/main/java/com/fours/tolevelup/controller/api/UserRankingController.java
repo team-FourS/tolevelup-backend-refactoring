@@ -24,21 +24,21 @@ public class UserRankingController {
     @GetMapping("/current")
     public Response<ListResponse<UserRankingDto>> getCurrentRanking(
             @RequestParam(defaultValue = "0") int start,
-            @RequestParam(defaultValue = "10") int range
+            @RequestParam(defaultValue = "10") int end
     ) {
         return Response.success(ListResponse.of(
-                rankingService.getCurrentRankingList(start, range)
+                rankingService.getCurrentRankingList(start, end)
         ));
     }
 
     @GetMapping("/current/themes")
     public Response<ListResponse<UserThemeRankingDto>> getThemeCurrentRanking(
             @RequestParam(defaultValue = "0") int start,
-            @RequestParam(defaultValue = "10") int range,
+            @RequestParam(defaultValue = "10") int end,
             @RequestParam int themeId
     ) {
         return Response.success(ListResponse.of(
-                rankingService.getThemeCurrentRankingList(start, range, themeId)
+                rankingService.getThemeCurrentRankingList(start, end, themeId)
         ));
     }
 
