@@ -54,5 +54,13 @@ public class RankingRedisService {
                 ).toList();
     }
 
+    public void deleteKeys() {
+        Set<String> keys = redisTemplate.keys("rank:*");
+        if(keys == null || keys.isEmpty()) {
+            return;
+        }
+        redisTemplate.delete(keys);
+    }
+
 }
 
