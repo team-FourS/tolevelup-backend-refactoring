@@ -18,6 +18,7 @@ public class Theme {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private ThemeType type;
 
     @Builder

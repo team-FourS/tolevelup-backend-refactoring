@@ -1,9 +1,7 @@
 package com.fours.tolevelup.ranking;
 
-import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserThemeRanking;
 import com.fours.tolevelup.repository.MissionLogRepository;
-import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.repository.UserThemeRankingRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class RankingPerformanceTest {
     @Autowired
     private MissionLogRepository missionLogRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserThemeRankingRepository themeRankingRepository;
@@ -58,22 +53,6 @@ public class RankingPerformanceTest {
 
         oldRank = null;
         newRank = null;
-    }
-
-    @Test
-    void setUserThemeRanking() {;
-        List<User> users = userRepository.findAll();
-        // Theme theme = themeRepository.findById(1).get()
-        for(User u : users) {
-            Long rank = Long.valueOf(missionLogRepository.themeRank(1, "2025-06", u.getId()));
-            themeRankingRepository.save(UserThemeRanking.builder()
-                            .user(u)
-                            .year(2025)
-                            .month(6)
-                            .totalExp(20D)
-                            .ranking(rank)
-                    .build());
-        }
     }
 
 }
