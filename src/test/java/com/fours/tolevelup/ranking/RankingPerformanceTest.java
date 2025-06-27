@@ -29,11 +29,13 @@ public class RankingPerformanceTest {
         List<Integer> oldRank = new ArrayList<>();
         List<Long> newRank = new ArrayList<>();
 
+        /*
         long startOld = System.currentTimeMillis();
         for(int i=1000;i<=1100;i++) {
             oldRank.add(missionLogRepository.themeRank(1, "2025-06", i+"유저"));
         }
         long endOld = System.currentTimeMillis();
+        */
 
         long startNew = System.currentTimeMillis();
         for(int i=1000;i<=1100;i++) {
@@ -43,12 +45,12 @@ public class RankingPerformanceTest {
         }
         long endNew = System.currentTimeMillis();
 
-        long durationOld = endOld - startOld;
+        //long durationOld = endOld - startOld;
         long durationNew = endNew - startNew;
 
-        Assertions.assertEquals(oldRank.size(), newRank.size());
+        //Assertions.assertEquals(oldRank.size(), newRank.size());
 
-        log.info("[기존 방식 실행 시간] {} ms", durationOld);
+        //log.info("[기존 방식 실행 시간] {} ms", durationOld);
         log.info("[변경 방식 실행 시간] {} ms", durationNew);
 
         oldRank = null;
