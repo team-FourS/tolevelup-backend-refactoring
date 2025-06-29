@@ -10,21 +10,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserCharacterRepository extends JpaRepository<UserCharacter, String> {
 
     @Query("SELECT uc FROM UserCharacter uc WHERE uc.user.id = :id")
     List<UserCharacter> getUserCharacter(@Param("id") String user_id);
+    List<UserCharacter> findUserCharacterByUserId(String userId);
 
     @Modifying
     @Query("delete from UserCharacter u where u.user = :uid")
     void deleteAllByUser(@Param("uid") User user);
 
-    @Query ("select uc from UserCharacter uc where uc.user.id=:user_id and uc.character.id=:character_id")
-    Optional<UserCharacter> findByUserIdandCharacterId(@Param("user_id") String user_id, @Param("character_id") String character_id);
-
+    UserCharacter findByIdAndUserId(String id, String userId);
     @Query("select uc.character.level from UserCharacter uc where uc.id = :id")
     int getLevel(@Param("id") String id);
 
@@ -39,13 +37,6 @@ public interface UserCharacterRepository extends JpaRepository<UserCharacter, St
     @Query("update UserCharacter uc set uc.character.id=:changeCharacter_id where uc.character.id = :character_id")
     void updateLevel(@Param("changeCharacter_id") String changeCharacter_id, @Param("character_id") String character_id);
 
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query("update UserCharacter uc set uc.character_name = :character_name where uc.user.id=:uid and uc.character.id=:cid")
-    void updateName(@Param("character_name") String character_name, @Param("uid") String user_id, @Param("cid") String character_id);
-
-
     @Query("select uc from UserCharacter uc where uc.user = :user and uc.character.id like :name%")
     UserCharacter findUserCharacterByUserAndThemeName(@Param("user") User user, @Param("name") String theme_name);
-
 }
