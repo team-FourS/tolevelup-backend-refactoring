@@ -1,5 +1,6 @@
 package com.fours.tolevelup.service.character;
 
+import com.fours.tolevelup.controller.request.UserCharacterRequest;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;
 import com.fours.tolevelup.repository.character.CharacterRepository;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,12 +22,12 @@ public class CharacterService {
         return userCharacterList;
     }
 
-    public CharacterDTO.UserCharacter changeCharacterName(String user_id, String character_id, String change_name) {
-        userCharacterRepository.updateName(change_name, user_id, character_id);
-
-        return CharacterDTO.UserCharacter.fromUserCharacter(
-                userCharacterRepository.findByUserIdandCharacterId(user_id, character_id).get());
-
+    @Transactional
+    public void changeCharacterName(String user_id, String character_id, UserCharacterRequest request) {
+        UserCharacter userCharacter = userCharacterRepository.findByIdAndUserId(character_id, user_id);
+        System.out.println(userCharacter.getId());
+        userCharacter.update(request.getCharacter_name());
+        System.out.println(userCharacter.getCharacter_name());
     }
 
     public List<CharacterDTO.CharacterData> getCharacterData() {
@@ -44,7 +46,7 @@ public class CharacterService {
     }
 
     public List<CharacterDTO.UserCharacterInfo> getUserCharacterData(String user_id) {
-        List<UserCharacter> userCharacterList = userCharacterRepository.getUserCharacter(user_id);
+        List<UserCharacter> userCharacterList = userCharacterRepository.findUserCharacterByUserId(user_id);
         List<CharacterDTO.UserCharacterInfo> userCharacterDataList = new ArrayList<>();
 
         for (UserCharacter userCharacter : userCharacterList) {
@@ -59,6 +61,4 @@ public class CharacterService {
 
         return userCharacterDataList;
     }
-
-
 }

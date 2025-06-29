@@ -41,12 +41,12 @@ public class CharacterController {
 
 
     @PutMapping("/characterName")
-    public Response<UserCharacterResponse.UserCharacter> update(Authentication authentication,
+    public Response<String> update(Authentication authentication,
                                                                 @RequestParam String character_id,
                                                                 @RequestBody UserCharacterRequest userCharacterRequest) {
-        CharacterDTO.UserCharacter nameChange = characterService.changeCharacterName(authentication.getName(),
-                character_id, userCharacterRequest.getCharacter_name());
-        return Response.success(UserCharacterResponse.UserCharacter.fromDTO(nameChange));
+
+        characterService.changeCharacterName(authentication.getName(), character_id, userCharacterRequest);
+        return Response.success("캐릭터 이름 변경 성공");
     }
 
     @GetMapping("/userCharacter")
