@@ -35,11 +35,6 @@ public class CharacterController {
         return ResponseEntity.ok(characterService.getCharacterData());
     }
 
-    public ResponseEntity<Object> characterList() {
-        return ResponseEntity.ok().build();
-    }
-
-
     @PutMapping("/characterName")
     public Response<String> update(Authentication authentication,
                                                                 @RequestParam String character_id,
