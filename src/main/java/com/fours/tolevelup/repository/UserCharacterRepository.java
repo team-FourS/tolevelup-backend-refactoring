@@ -1,4 +1,4 @@
-package com.fours.tolevelup.repository.character;
+package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;

@@ -1,4 +1,4 @@
-package com.fours.tolevelup.repository.character;
+package com.fours.tolevelup.repository;
 
 import com.fours.tolevelup.model.entity.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
