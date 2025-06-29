@@ -20,9 +20,7 @@ public class CharacterService {
     @Transactional
     public void changeCharacterName(String user_id, String character_id, UserCharacterRequest request) {
         UserCharacter userCharacter = userCharacterRepository.findByIdAndUserId(character_id, user_id);
-        System.out.println(userCharacter.getId());
         userCharacter.update(request.getCharacter_name());
-        System.out.println(userCharacter.getCharacter_name());
     }
 
     public List<CharacterDTO.CharacterData> getCharacterData() {
