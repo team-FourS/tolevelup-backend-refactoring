@@ -1,7 +1,7 @@
 package com.fours.tolevelup.service.character;
 
 import com.fours.tolevelup.controller.request.UserCharacterRequest;
-import com.fours.tolevelup.model.entity.User;
+import com.fours.tolevelup.model.entity.Character;
 import com.fours.tolevelup.model.entity.UserCharacter;
 import com.fours.tolevelup.repository.character.CharacterRepository;
 import com.fours.tolevelup.repository.character.UserCharacterRepository;
@@ -26,14 +26,14 @@ public class CharacterService {
     }
 
     public List<CharacterDTO.CharacterData> getCharacterData() {
-        List<Object[]> characterDataList = characterRepository.getCharacters();
+        List<Character> characters= characterRepository.findAll();
         List<CharacterDTO.CharacterData> characterDTOList = new ArrayList<>();
 
-        for (Object[] characterData : characterDataList) {
+        for(Character character : characters) {
             CharacterDTO.CharacterData characterDTO = new CharacterDTO.CharacterData();
-            characterDTO.setId((String) characterData[0]);
-            characterDTO.setLevel((int) characterData[1]);
-            characterDTO.setInfo((String) characterData[2]);
+            characterDTO.setId(character.getId());
+            characterDTO.setLevel(character.getLevel());
+            characterDTO.setInfo(character.getInfo());
             characterDTOList.add(characterDTO);
         }
 

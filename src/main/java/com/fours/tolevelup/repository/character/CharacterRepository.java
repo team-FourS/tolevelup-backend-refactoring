@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<Character, String> {
-    @Query("select c.id, c.level, c.info from Character c")
-    List<Object[]> getCharacters();
 
     @Query("select c from Character c where c.level = 1")
     List<Character> findByLevel();
