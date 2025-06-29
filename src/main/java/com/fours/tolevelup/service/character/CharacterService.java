@@ -17,11 +17,6 @@ public class CharacterService {
     private final UserCharacterRepository userCharacterRepository;
     private final CharacterRepository characterRepository;
 
-    public List<CharacterDTO.UserCharacterInfo> findUserCharacterList(User user) {
-        List<CharacterDTO.UserCharacterInfo> userCharacterList = new ArrayList<>();
-        return userCharacterList;
-    }
-
     @Transactional
     public void changeCharacterName(String user_id, String character_id, UserCharacterRequest request) {
         UserCharacter userCharacter = userCharacterRepository.findByIdAndUserId(character_id, user_id);
