@@ -1,13 +1,15 @@
 package com.fours.tolevelup.service.character;
 
-import com.fours.tolevelup.model.entity.User;
+import com.fours.tolevelup.controller.request.UserCharacterRequest;
+import com.fours.tolevelup.model.entity.Character;
 import com.fours.tolevelup.model.entity.UserCharacter;
-import com.fours.tolevelup.repository.character.CharacterRepository;
-import com.fours.tolevelup.repository.character.UserCharacterRepository;
+import com.fours.tolevelup.repository.CharacterRepository;
+import com.fours.tolevelup.repository.UserCharacterRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -15,28 +17,21 @@ public class CharacterService {
     private final UserCharacterRepository userCharacterRepository;
     private final CharacterRepository characterRepository;
 
-    public List<CharacterDTO.UserCharacterInfo> findUserCharacterList(User user) {
-        List<CharacterDTO.UserCharacterInfo> userCharacterList = new ArrayList<>();
-        return userCharacterList;
-    }
-
-    public CharacterDTO.UserCharacter changeCharacterName(String user_id, String character_id, String change_name) {
-        userCharacterRepository.updateName(change_name, user_id, character_id);
-
-        return CharacterDTO.UserCharacter.fromUserCharacter(
-                userCharacterRepository.findByUserIdandCharacterId(user_id, character_id).get());
-
+    @Transactional
+    public void changeCharacterName(String user_id, String character_id, UserCharacterRequest request) {
+        UserCharacter userCharacter = userCharacterRepository.findByIdAndUserId(character_id, user_id);
+        userCharacter.update(request.getCharacter_name());
     }
 
     public List<CharacterDTO.CharacterData> getCharacterData() {
-        List<Object[]> characterDataList = characterRepository.getCharacters();
+        List<Character> characters= characterRepository.findAll();
         List<CharacterDTO.CharacterData> characterDTOList = new ArrayList<>();
 
-        for (Object[] characterData : characterDataList) {
+        for(Character character : characters) {
             CharacterDTO.CharacterData characterDTO = new CharacterDTO.CharacterData();
-            characterDTO.setId((String) characterData[0]);
-            characterDTO.setLevel((int) characterData[1]);
-            characterDTO.setInfo((String) characterData[2]);
+            characterDTO.setId(character.getId());
+            characterDTO.setLevel(character.getLevel());
+            characterDTO.setInfo(character.getInfo());
             characterDTOList.add(characterDTO);
         }
 
@@ -44,7 +39,7 @@ public class CharacterService {
     }
 
     public List<CharacterDTO.UserCharacterInfo> getUserCharacterData(String user_id) {
-        List<UserCharacter> userCharacterList = userCharacterRepository.getUserCharacter(user_id);
+        List<UserCharacter> userCharacterList = userCharacterRepository.findUserCharacterByUserId(user_id);
         List<CharacterDTO.UserCharacterInfo> userCharacterDataList = new ArrayList<>();
 
         for (UserCharacter userCharacter : userCharacterList) {
@@ -59,6 +54,4 @@ public class CharacterService {
 
         return userCharacterDataList;
     }
-
-
 }

@@ -10,7 +10,7 @@ import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;
 import com.fours.tolevelup.repository.FollowRepository;
 import com.fours.tolevelup.repository.LikeRepository;
-import com.fours.tolevelup.repository.character.UserCharacterRepository;
+import com.fours.tolevelup.repository.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.UserRepository;
 import com.fours.tolevelup.service.character.CharacterDTO.UserCharacterFeed;
@@ -64,7 +64,7 @@ public class FeedService {
 
     public List<FeedDTO.CharacterData> getCharacterData(String userId){
         User user = getUserOrException(userId);
-        List<UserCharacter> userCharacterList = userCharacterRepository.getUserCharacter(userId);
+        List<UserCharacter> userCharacterList = userCharacterRepository.findUserCharacterByUserId(userId);
         List<FeedDTO.CharacterData> characterDataList = new ArrayList<>();
 
         for(UserCharacter userCharacter : userCharacterList){

@@ -9,8 +9,8 @@ import com.fours.tolevelup.model.entity.Mission;
 import com.fours.tolevelup.model.entity.MissionLog;
 import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.model.entity.UserCharacter;
-import com.fours.tolevelup.repository.character.CharacterRepository;
-import com.fours.tolevelup.repository.character.UserCharacterRepository;
+import com.fours.tolevelup.repository.CharacterRepository;
+import com.fours.tolevelup.repository.UserCharacterRepository;
 import com.fours.tolevelup.repository.MissionRepository;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.ThemeExpRepository;
@@ -48,7 +48,7 @@ public class MissionService {
         Mission mission = getMissionOrException(missionId);
         MissionLog missionLog = getMissionLogOrException(logId);
 
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),mission.getTheme().getId());
         int beforeExp = themeExpRepository.exp(user, mission.getTheme());
         themeExpRepository.updateExp(getMissionExp(missionLog), user, mission.getTheme());
         int afterExp = themeExpRepository.exp(user, mission.getTheme());
@@ -64,16 +64,18 @@ public class MissionService {
     }
 
     private void levelUpCharacter(User user, Mission mission) {
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,
-                mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),
+                mission.getTheme().getId());
+        System.out.println(userCharacter.getId());
         Character updateCharacter = characterRepository.getLvUpCharacter(userCharacter.getCharacter().getLevel(),
                 mission.getTheme().getId());
         userCharacterRepository.updateLevel(updateCharacter.getId(), userCharacter.getCharacter().getId());
     }
 
     private void levelDownCharacter(User user, Mission mission) {
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,
-                mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),
+                mission.getTheme().getId());
+        System.out.println(userCharacter.getId());
         Character updateCharacter = characterRepository.getLvDownCharacter(userCharacter.getCharacter().getLevel(),
                 mission.getTheme().getId());
         userCharacterRepository.updateLevel(updateCharacter.getId(), userCharacter.getCharacter().getId());
