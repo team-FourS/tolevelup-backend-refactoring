@@ -1,6 +1,6 @@
 package com.fours.tolevelup.exception;
 
-import com.fours.tolevelup.controller.response.Response;
+import com.fours.tolevelup.controller.response.common.Response;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 

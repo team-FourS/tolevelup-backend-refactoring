@@ -1,7 +1,7 @@
 package com.fours.tolevelup.exception;
 
 
-import com.fours.tolevelup.controller.response.Response;
+import com.fours.tolevelup.controller.response.common.Response;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;

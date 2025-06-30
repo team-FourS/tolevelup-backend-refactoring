@@ -12,6 +12,7 @@ import com.fours.tolevelup.model.entity.User;
 import com.fours.tolevelup.repository.MissionLogRepository;
 import com.fours.tolevelup.repository.ThemeRepository;
 import com.fours.tolevelup.repository.UserRepository;
+import com.fours.tolevelup.service.ranking.RankingRedisService;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserMissionService {
 
+    private final RankingRedisService rankingRedisService;
     private final UserRepository userRepository;
     private final ThemeRepository themeRepository;
     private final MissionLogRepository missionLogRepository;
@@ -44,6 +46,9 @@ public class UserMissionService {
     public void changeStatus(String userId, Long missionLodId) {
         MissionLog missionLog = getMissionLogOrException(missionLodId);
         userRightCheck(userId, missionLog.getUser());
+        rankingRedisService.updateUserExp(
+                userId, missionLog.getMission().getTheme().getId(), getExpToApply(missionLog)
+        );
         missionLog.updateStatus(getOppositeStatus(missionLog.getStatus()));
     }
 
@@ -52,6 +57,15 @@ public class UserMissionService {
             return Date.valueOf(LocalDate.now().minusDays(LocalDate.now().getDayOfWeek().getValue() - 1));
         }
         return Date.valueOf(LocalDate.now());
+    }
+
+    private int getExpToApply(MissionLog missionLog) {
+        int exp = (int) missionLog.getMission().getExp();
+        if(missionLog.getStatus() == MissionStatus.DAILY_COMPLETE
+                || missionLog.getStatus() == MissionStatus.WEEKLY_COMPLETE ) {
+            exp*=-1;
+        }
+        return exp;
     }
 
     private MissionStatus getOppositeStatus(MissionStatus status) {
