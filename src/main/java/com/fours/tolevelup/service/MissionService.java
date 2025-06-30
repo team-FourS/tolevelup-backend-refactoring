@@ -48,7 +48,7 @@ public class MissionService {
         Mission mission = getMissionOrException(missionId);
         MissionLog missionLog = getMissionLogOrException(logId);
 
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),mission.getTheme().getId());
         int beforeExp = themeExpRepository.exp(user, mission.getTheme());
         themeExpRepository.updateExp(getMissionExp(missionLog), user, mission.getTheme());
         int afterExp = themeExpRepository.exp(user, mission.getTheme());
@@ -64,16 +64,18 @@ public class MissionService {
     }
 
     private void levelUpCharacter(User user, Mission mission) {
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,
-                mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),
+                mission.getTheme().getId());
+        System.out.println(userCharacter.getId());
         Character updateCharacter = characterRepository.getLvUpCharacter(userCharacter.getCharacter().getLevel(),
                 mission.getTheme().getId());
         userCharacterRepository.updateLevel(updateCharacter.getId(), userCharacter.getCharacter().getId());
     }
 
     private void levelDownCharacter(User user, Mission mission) {
-        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserAndThemeName(user,
-                mission.getTheme().getName());
+        UserCharacter userCharacter = userCharacterRepository.findUserCharacterByUserIdAndThemeId(user.getId(),
+                mission.getTheme().getId());
+        System.out.println(userCharacter.getId());
         Character updateCharacter = characterRepository.getLvDownCharacter(userCharacter.getCharacter().getLevel(),
                 mission.getTheme().getId());
         userCharacterRepository.updateLevel(updateCharacter.getId(), userCharacter.getCharacter().getId());

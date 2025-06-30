@@ -35,6 +35,5 @@ public interface UserCharacterRepository extends JpaRepository<UserCharacter, St
     @Query("update UserCharacter uc set uc.character.id=:changeCharacter_id where uc.character.id = :character_id")
     void updateLevel(@Param("changeCharacter_id") String changeCharacter_id, @Param("character_id") String character_id);
 
-    @Query("select uc from UserCharacter uc where uc.user = :user and uc.character.id like :name%")
-    UserCharacter findUserCharacterByUserAndThemeName(@Param("user") User user, @Param("name") String theme_name);
+    UserCharacter findUserCharacterByUserIdAndThemeId(String userId, int themeId);
 }
