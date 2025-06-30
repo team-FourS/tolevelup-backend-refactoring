@@ -14,8 +14,6 @@ import java.util.List;
 @Repository
 public interface UserCharacterRepository extends JpaRepository<UserCharacter, String> {
 
-    @Query("SELECT uc FROM UserCharacter uc WHERE uc.user.id = :id")
-    List<UserCharacter> getUserCharacter(@Param("id") String user_id);
     List<UserCharacter> findUserCharacterByUserId(String userId);
 
     @Modifying

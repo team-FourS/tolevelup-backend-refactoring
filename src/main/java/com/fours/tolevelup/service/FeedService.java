@@ -64,7 +64,7 @@ public class FeedService {
 
     public List<FeedDTO.CharacterData> getCharacterData(String userId){
         User user = getUserOrException(userId);
-        List<UserCharacter> userCharacterList = userCharacterRepository.getUserCharacter(userId);
+        List<UserCharacter> userCharacterList = userCharacterRepository.findUserCharacterByUserId(userId);
         List<FeedDTO.CharacterData> characterDataList = new ArrayList<>();
 
         for(UserCharacter userCharacter : userCharacterList){
